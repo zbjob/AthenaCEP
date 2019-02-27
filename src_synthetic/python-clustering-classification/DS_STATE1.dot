@@ -1,0 +1,29 @@
+digraph Tree {
+node [shape=box, style="filled, rounded", color="black", fontname=helvetica] ;
+edge [fontname=helvetica] ;
+0 [label=<X<SUB>0</SUB> &le; 37.5<br/>gini = 0.6<br/>samples = 41<br/>value = [5, 24, 6, 6]<br/>class = y<SUB>1</SUB>>, fillcolor="#47e53983"] ;
+1 [label=<gini = 0.0<br/>samples = 14<br/>value = [0, 14, 0, 0]<br/>class = y<SUB>1</SUB>>, fillcolor="#47e539ff"] ;
+0 -> 1 [labeldistance=2.5, labelangle=45, headlabel="True"] ;
+2 [label=<X<SUB>0</SUB> &le; 54.5<br/>gini = 0.73<br/>samples = 27<br/>value = [5, 10, 6, 6]<br/>class = y<SUB>1</SUB>>, fillcolor="#47e53931"] ;
+0 -> 2 [labeldistance=2.5, labelangle=-45, headlabel="False"] ;
+3 [label=<X<SUB>0</SUB> &le; 40.5<br/>gini = 0.664<br/>samples = 17<br/>value = [5, 0, 6, 6]<br/>class = y<SUB>2</SUB>>, fillcolor="#399de500"] ;
+2 -> 3 ;
+4 [label=<gini = 0.0<br/>samples = 3<br/>value = [0, 0, 0, 3]<br/>class = y<SUB>3</SUB>>, fillcolor="#d739e5ff"] ;
+3 -> 4 ;
+5 [label=<X<SUB>0</SUB> &le; 51.5<br/>gini = 0.643<br/>samples = 14<br/>value = [5, 0, 6, 3]<br/>class = y<SUB>2</SUB>>, fillcolor="#399de51c"] ;
+3 -> 5 ;
+6 [label=<X<SUB>0</SUB> &le; 48.5<br/>gini = 0.496<br/>samples = 11<br/>value = [5, 0, 6, 0]<br/>class = y<SUB>2</SUB>>, fillcolor="#399de52a"] ;
+5 -> 6 ;
+7 [label=<X<SUB>0</SUB> &le; 42.5<br/>gini = 0.375<br/>samples = 8<br/>value = [2, 0, 6, 0]<br/>class = y<SUB>2</SUB>>, fillcolor="#399de5aa"] ;
+6 -> 7 ;
+8 [label=<gini = 0.0<br/>samples = 2<br/>value = [2, 0, 0, 0]<br/>class = y<SUB>0</SUB>>, fillcolor="#e58139ff"] ;
+7 -> 8 ;
+9 [label=<gini = 0.0<br/>samples = 6<br/>value = [0, 0, 6, 0]<br/>class = y<SUB>2</SUB>>, fillcolor="#399de5ff"] ;
+7 -> 9 ;
+10 [label=<gini = 0.0<br/>samples = 3<br/>value = [3, 0, 0, 0]<br/>class = y<SUB>0</SUB>>, fillcolor="#e58139ff"] ;
+6 -> 10 ;
+11 [label=<gini = 0.0<br/>samples = 3<br/>value = [0, 0, 0, 3]<br/>class = y<SUB>3</SUB>>, fillcolor="#d739e5ff"] ;
+5 -> 11 ;
+12 [label=<gini = 0.0<br/>samples = 10<br/>value = [0, 10, 0, 0]<br/>class = y<SUB>1</SUB>>, fillcolor="#47e539ff"] ;
+2 -> 12 ;
+}

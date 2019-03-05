@@ -12,7 +12,7 @@ To compile the code in Linux:
 2. make -f MakefileCM 
 3. the executable file is   /AthenaCEP/src_synthetic/src_NS/bin/cep_match
 
-====================================================================================================
+=======================================================================================
 Synthetic datas:
 To run the experiments:
 A. Generate synthetic datas
@@ -29,7 +29,7 @@ C. Compile the code.
 
 D. The offile estmation Python code is in  ./AthenaCEP/src_synthetic/python-clustering-classification/ 
    The trained classifiers could be found in .pkl files and could be visualised by .dot and .pdf files.
-   To automatically genearated classifiers in C++ code, please find "DecisionTreeToCpp" at https://github.com/papkov/DecisionTreeToCpp    
+   To automatically genearated classifiers in C++ code, please find the source-to-source transformation tool  "DecisionTreeToCpp" at https://github.com/papkov/DecisionTreeToCpp    
 
 F. In order to run the CEP engine, you need a simple script like:
 
@@ -44,4 +44,4 @@ F. In order to run the CEP engine, you need a simple script like:
           runInfor_P1NS.txt     contains the information of the accuracy, the number of dropped events, the number of droppped partial matches.
           latency_P1NS.csv      contains the record of latency for every complete matches.
           
-====================================================================================================
+=====================================================================================

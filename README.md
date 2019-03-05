@@ -3,6 +3,7 @@
 AthenaCEP aims at sovling the problem of load shedding in CEP. It provides a fundamentally new perspective to shed the exponentially increacing partil matches as well as input event tuples. It has the wisdom, as Athena, a Greek goddess, to decide when, what and how much partial matches or event tuples to drop to satisfy the strict latency bound and keeps the maximual accuracy. The secret is on her cost model...
 
 =====================================================================================
+
 requirements for compilers: supporting C++11 or C++14.  G++, Clang has been tested.
 
 requirements for libraries: POSIX Threads(Pthreads), Python, scikit-learn

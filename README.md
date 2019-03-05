@@ -27,7 +27,7 @@ CEP queries for real-world data sets, NYC bike sharing data, have been defined i
 parsing the event schema & queries, and constructing the CEP engine are automatically done. 
 
 
-=======================================================================================
+=====================================================================================
 
 Synthetic data sets:
 To run the experiments:
@@ -84,3 +84,6 @@ C. Complie the code:
 D. Run the experiments.
    An example is as  ./AthenaCEP/bike_sharing_data/query_p1.sh
 
+=====================================================================================
+Please feel free to contact me by  bo.zhao "at" hu-berlin.de, if you have any questions. 
+https://hu.berlin/bo_zhao

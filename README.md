@@ -53,7 +53,15 @@ real-world data sets: NYC bike-sharing.
 Links of the data sets: https://www.citibikenyc.com/system-data
 
 A. Transform the time stamp/ data cleaning
+   run CleanData.py for 201810-citibike-tripdata.csv data set and get the cleaned data.
 
 B. Set the path of the data source in main function.
+   change the streamFile string in main function in ./AthenaCEP/src_testing_bike_sharing/cep_match/
 
-C. Run the experiments.
+C. Complie the code:
+   1.  cd ./AthenaCEP/src_testing_bike_sharing/
+   2.  make -f MakefileCM
+
+D. Run the experiments.
+   An example is as  ./AthenaCEP/bike_sharing_data/query_p1.sh
+

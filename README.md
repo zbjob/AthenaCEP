@@ -53,5 +53,7 @@ real-world data sets: NYC bike-sharing.
 Links of the data sets: https://www.citibikenyc.com/system-data
 
 A. Transform the time stamp/ data cleaning
+
 B. Set the path of the data source in main function.
+
 C. Run the experiments.

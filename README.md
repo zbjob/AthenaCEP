@@ -53,11 +53,16 @@ F. In order to run the CEP engine, you need a simple script like:
    
    the arguments of the command line is reflected in the main function in cep_match.cpp, which are very straightforward and self explained.
 
-   in the above specific query, -c ./Synthetic.eql  means the event schema and query configuration file ./Synthetic.eql. 
-        -q P1                       means to evaluate  query P1.
-        -n P1NS                     means the prefix of generated results and  static files
-        -s                          means to appendi the timestamps for events appeared in partial matches and complete matches.
-        -p monitoring_P1NS.csv      means to dump the throughput information to the file monitoring_P1NS.csv 
+   in the above specific query, 
+   -c                          ./Synthetic.eql  means the event schema and query configuration file ./Synthetic.eql. 
+   
+   -q P1                       means to evaluate  query P1.
+   
+   -n P1NS                     means the prefix of generated results and  static files
+   
+   -s                          means to appendi the timestamps for events appeared in partial matches and complete matches.
+   
+   -p monitoring_P1NS.csv      means to dump the throughput information to the file monitoring_P1NS.csv 
         
    more scripts are attached in the repository.
    
@@ -86,4 +91,6 @@ D. Run the experiments.
 
 =====================================================================================
 Please feel free to contact me by  bo.zhao "at" hu-berlin.de, if you have any questions. 
+
 https://hu.berlin/bo_zhao
+

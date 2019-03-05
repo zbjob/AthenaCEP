@@ -1,0 +1,9 @@
+[main] flag 1 
+event stream queue is empty now!
+eventCn 1878433
+#full Match 1875
+#high latecny (> 150)0
+#NumPartialMatch 2502029
+#NumDropedPM 1349672
+#NumDropedInputEvents 0
+avg latency: 2

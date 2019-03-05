@@ -1,0 +1,129 @@
+[QueryLoader::setupPatternMatcher ] state 1--1 || 4
+1
+[QueryLoader::setupPatternMatcher ] state 2--1 || 4
+1
+[QueryLoader::setupPatternMatcher ] state 3--1 || 4
+1
+[QueryLoader::setupPatternMatcher ] state 4--1 || 4
+1
+[QueryLoader::setupPatternMatcher ] state 5--1 || 4
+1
+ EventDecl: 
+name : Bike
+attributes : timestamp,end_time,duration_sec,start_station_id,end_station_id,bike_id,event_id,user_type,user_birth,user_gender,
+name : Return3
+attributes : timestamp,a1,a2,a3,
+print queries 
+query name: P1
+query events: 
+0 , aBike
+1 , bBike
+2 , cBike
+3 , dBike
+4 , eBike
+query where predicates: 
+0.5---- 4---- 1.5
+0.5---- 4---- 2.5
+0.5---- 4---- 3.5
+0.5---- 4---- 4.5
+0.4---- 4---- 1.3
+1.4---- 4---- 2.3
+2.4---- 4---- 3.3
+3.4---- 4---- 4.3
+query attrMap: 
+0 , 0
+0 , 3
+0 , 4
+0 , 5
+1 , 0
+1 , 4
+2 , 0
+2 , 4
+3 , 0
+3 , 4
+4 , 0
+4 , 4
+time window: 7200000000
+return attribute: 
+0,0
+0,3
+0,4
+1,0
+1,4
+2,0
+2,4
+3,0
+3,4
+4,0
+4,4
+print states: =====================
+state ID : 1
+KeyAttrIdx siez:1
+index_attribute : 1
+attribute Cnt: 4
+------time slice : 0 cluster : 0 #PMs : 0
+------time slice : 1 cluster : 1 #PMs : 0
+------time slice : 2 cluster : 2 #PMs : 0
+------time slice : 3 cluster : 3 #PMs : 0
+
+state ID : 2
+KeyAttrIdx siez:2
+index_attribute : 4
+attribute Cnt: 6
+------time slice : 0 cluster : 0 #PMs : 0
+------time slice : 1 cluster : 1 #PMs : 0
+------time slice : 2 cluster : 2 #PMs : 0
+------time slice : 3 cluster : 3 #PMs : 0
+
+state ID : 3
+KeyAttrIdx siez:0
+index_attribute : 3
+attribute Cnt: 8
+------time slice : 0 cluster : 0 #PMs : 0
+------time slice : 1 cluster : 1 #PMs : 0
+------time slice : 2 cluster : 2 #PMs : 0
+------time slice : 3 cluster : 3 #PMs : 0
+
+state ID : 4
+KeyAttrIdx siez:0
+index_attribute : 3
+attribute Cnt: 10
+------time slice : 0 cluster : 0 #PMs : 0
+------time slice : 1 cluster : 1 #PMs : 0
+------time slice : 2 cluster : 2 #PMs : 0
+------time slice : 3 cluster : 3 #PMs : 0
+
+print trasitions ====================== 
+from state : 0--- to state: 1 condditions : ------------
+
+from state : 1--- to state: 2 condditions : ------------
+------------------------ 1st operandi idx: 3--- 2nd operand idx: 5--- operator: 4
+------------------------ 1st operandi idx: 2--- 2nd operand idx: 3--- operator: 4
+
+from state : 2--- to state: 3 condditions : ------------
+------------------------ 1st operandi idx: 3--- 2nd operand idx: 5--- operator: 4
+------------------------ 1st operandi idx: 5--- 2nd operand idx: 3--- operator: 4
+
+from state : 3--- to state: 4 condditions : ------------
+------------------------ 1st operandi idx: 3--- 2nd operand idx: 5--- operator: 4
+------------------------ 1st operandi idx: 7--- 2nd operand idx: 3--- operator: 4
+
+from state : 4--- to state: 5 condditions : ------------
+------------------------ 1st operandi idx: 3--- 2nd operand idx: 5--- operator: 4
+------------------------ 1st operandi idx: 9--- 2nd operand idx: 3--- operator: 4
+
+============================================== 
+============================================== 
+monitoring 0
+[main] flag8 
+event stream queue is empty now!
+perform 0loadshedding
+eventCn 1878433
+#full Match 0
+#partial Match 0
+#high latecny (> 20000) 0
+m_RandomInputSheddingFlag: 0
+#shedding PM 0
+#approximate_BKP_PMshedding 0
+inputShedding number 0
+exe time in ms: 210

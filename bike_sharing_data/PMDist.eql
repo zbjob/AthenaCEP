@@ -1,0 +1,126 @@
+
+TYPE A{
+    timestamp,
+    v1,
+    v2,
+    event_id
+};
+
+TYPE B{
+    timestamp,
+    v1,
+    v2,
+    event_id
+};
+
+TYPE C{
+    timestamp,
+    v1,
+    v2,
+    event_id
+};
+
+TYPE Z{
+    timestamp,
+    v1,
+    v2,
+    event_id
+};
+
+TYPE D{
+    timestamp,
+    v1,
+    v2,
+    event_id
+};
+
+QUERY P1
+EVENT SEQ(A a, B b, C c)
+WHERE [event_id] && a.v1 < b.v1 && b.v2 > c.v2 && a.v1 > c.v1
+WITHIN 60s
+RETURN GReturn3(a.timestamp, b.timestamp, c.timestamp);
+
+QUERY P2
+EVENT SEQ(A a, B b, C c)
+WHERE [event_id] && a.v1 > b.v1 && b.v2 < c.v2 && a.v1 < c.v1
+WITHIN 20ms
+RETURN GReturn3(a.event_id, a.timestamp, a.v1, b.timestamp, b.v2, c.timestamp, c.v1, c.v2);
+
+QUERY P3
+EVENT SEQ(A a, B b, C c)
+WHERE [event_id] && a.v1 < b.v1 && b.v2 > c.v2
+WITHIN 15s
+RETURN GReturn3(a.timestamp, b.timestamp, c.timestamp);
+
+QUERY P4
+EVENT SEQ(A a, B b, C c)
+WHERE [event_id] && a.v1 > b.v1 && b.v2 < c.v2 
+WITHIN 10s
+RETURN GReturn3(a.timestamp, b.timestamp, c.timestamp);
+
+QUERY P5
+EVENT SEQ(A a, B b, C c, A d)
+WHERE [event_id] && a.v1 > b.v1 && b.v2 < c.v2 && a.v1 < d.v2 
+WITHIN 20s 
+RETURN GReturn3(a.timestamp, b.timestamp, c.timestamp, d.timestamp);
+
+QUERY P6
+EVENT SEQ(A a, B b, C c)
+WHERE [event_id] 
+WITHIN 2s 
+RETURN GReturn3(a.event_id, a.timestamp, b.timestamp, c.timestamp);
+
+QUERY P7
+EVENT SEQ(A a, B b, C c )
+WHERE [event_id] && a.v1 > b.v1 && b.v2 < c.v2 && a.v1 < c.v1
+WITHIN  50000us
+RETURN GReturn3(a.event_id, a.timestamp, b.timestamp, c.timestamp);
+
+QUERY P8
+EVENT SEQ(A a, B b, C c )
+WHERE [event_id] && a.v1 > b.v1 && b.v2 < c.v2 && a.v1 < c.v1
+WITHIN  10ms
+RETURN GReturn3(a.event_id, a.timestamp, b.timestamp, c.timestamp);
+
+QUERY P9
+EVENT SEQ(A a, B b, C c )
+WHERE [event_id] && a.v1 > b.v1 && b.v2 < c.v2 && a.v1 < c.v1
+WITHIN  20ms
+RETURN GReturn3(a.event_id, a.timestamp, b.timestamp, c.timestamp);
+
+QUERY P10
+EVENT SEQ(A a, B b, C c )
+WHERE [event_id] && a.v1 > b.v1 && b.v2 < c.v2 && a.v1 < c.v1
+WITHIN  30ms
+RETURN GReturn3(a.event_id, a.timestamp, b.timestamp, c.timestamp);
+
+QUERY P11
+EVENT SEQ(A a, B b, C c )
+WHERE [event_id] && a.v1 > b.v1 && b.v2 < c.v2 && a.v1 < c.v1
+WITHIN  40ms
+RETURN GReturn3(a.event_id, a.timestamp, b.timestamp, c.timestamp);
+
+QUERY P12
+EVENT SEQ(A a, B b, C c )
+WHERE [event_id] && a.v1 > b.v1 && b.v2 < c.v2 && a.v1 < c.v1
+WITHIN  50ms
+RETURN GReturn3(a.event_id, a.timestamp, b.timestamp, c.timestamp);
+
+QUERY P13
+EVENT SEQ(A a, B b, C c )
+WHERE [event_id] && a.v1 > b.v1 && b.v2 < c.v2 && a.v1 < c.v1
+WITHIN  60ms
+RETURN GReturn3(a.event_id, a.timestamp, b.timestamp, c.timestamp);
+
+
+QUERY P14
+EVENT SEQ(A a, B b, C c )
+WHERE [event_id] && a.v1 > b.v1 && b.v2 < c.v2 && a.v1 < c.v1
+WITHIN  70ms
+RETURN GReturn3(a.event_id, a.timestamp, b.timestamp, c.timestamp);
+
+QUERY P15
+EVENT SEQ(A a, B b, C c )
+WHERE [event_id] && a.v1 > b.v1 && b.v2 < c.v2 && a.v1 < c.v1
+WITHIN  80ms
+RETURN GReturn3(a.event_id, a.timestamp, b.timestamp, c.timestamp);

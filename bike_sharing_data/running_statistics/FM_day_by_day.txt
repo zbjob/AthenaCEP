@@ -1,0 +1,304 @@
+bike trips state in day 1
+========================
+eventCn 71351
+#full Match 15219
+#high latecny (> 150)3
+#NumPartialMatch 209923
+15 : ---Murray St & West St---W 20 St & 11 Ave------W 22 St & 10 Ave------W 20 St & 11 Ave------W 22 St & 10 Ave------W 20 St & 11 Ave---
+15 : ---W 20 St & 11 Ave---W 22 St & 10 Ave------W 20 St & 11 Ave------W 22 St & 10 Ave------W 20 St & 11 Ave------W 26 St & 8 Ave---
+bike trips state in day 2
+========================
+eventCn 144445
+#full Match 31580
+#high latecny (> 150)12
+#NumPartialMatch 427429
+15 : ---W 16 St & The High Line---Pier 40 - Hudson River Park------6 Ave & Canal St------Pier 40 - Hudson River Park------Watts St & Greenwich St------Pier 40 - Hudson River Park---
+15 : ---W 49 St & 8 Ave---E 23 St & 1 Ave------E 20 St & FDR Drive------1 Ave & E 18 St------E 23 St & 1 Ave------E 20 St & FDR Drive---
+15 : ---Watts St & Greenwich St---Pier 40 - Hudson River Park------Watts St & Greenwich St------Pier 40 - Hudson River Park------Watts St & Greenwich St------North Moore St & Greenwich St---
+20 : ---6 Ave & Canal St---Pier 40 - Hudson River Park------Watts St & Greenwich St------Pier 40 - Hudson River Park------Watts St & Greenwich St------North Moore St & Greenwich St---
+20 : ---Pier 40 - Hudson River Park---6 Ave & Canal St------Pier 40 - Hudson River Park------Watts St & Greenwich St------Pier 40 - Hudson River Park------Watts St & Greenwich St---
+20 : ---W 16 St & The High Line---Pier 40 - Hudson River Park------Watts St & Greenwich St------Pier 40 - Hudson River Park------Watts St & Greenwich St------North Moore St & Greenwich St---
+21 : ---E 23 St & 1 Ave---E 20 St & FDR Drive------1 Ave & E 18 St------E 23 St & 1 Ave------E 20 St & FDR Drive------1 Ave & E 18 St---
+21 : ---Pier 40 - Hudson River Park---Watts St & Greenwich St------Pier 40 - Hudson River Park------Watts St & Greenwich St------Pier 40 - Hudson River Park------Watts St & Greenwich St---
+21 : ---Watts St & Greenwich St---Pier 40 - Hudson River Park------Watts St & Greenwich St------Pier 40 - Hudson River Park------Watts St & Greenwich St------Pier 40 - Hudson River Park---
+35 : ---6 Ave & Canal St---Pier 40 - Hudson River Park------Watts St & Greenwich St------Pier 40 - Hudson River Park------Watts St & Greenwich St------Pier 40 - Hudson River Park---
+35 : ---W 16 St & The High Line---Pier 40 - Hudson River Park------Watts St & Greenwich St------Pier 40 - Hudson River Park------Watts St & Greenwich St------Pier 40 - Hudson River Park---
+bike trips state in day 3
+========================
+eventCn 221143
+#full Match 47807
+#high latecny (> 150)19
+#NumPartialMatch 653356
+bike trips state in day 4
+========================
+eventCn 291761
+#full Match 61552
+#high latecny (> 150)505
+#NumPartialMatch 853837
+20 : ---South St & Whitehall St---Little West St & 1 Pl------South St & Whitehall St------Little West St & 1 Pl------South End Ave & Liberty St------Hudson St & Reade St---
+21 : ---Little West St & 1 Pl---South End Ave & Liberty St------Little West St & 1 Pl------South End Ave & Liberty St------Little West St & 1 Pl------South End Ave & Liberty St---
+21 : ---Little West St & 1 Pl---South St & Whitehall St------Little West St & 1 Pl------South St & Whitehall St------Little West St & 1 Pl------South St & Whitehall St---
+21 : ---South End Ave & Liberty St---Little West St & 1 Pl------South End Ave & Liberty St------Little West St & 1 Pl------South End Ave & Liberty St------Little West St & 1 Pl---
+21 : ---South St & Whitehall St---Little West St & 1 Pl------South St & Whitehall St------Little West St & 1 Pl------South St & Whitehall St------Little West St & 1 Pl---
+35 : ---Little West St & 1 Pl---South St & Whitehall St------Little West St & 1 Pl------South St & Whitehall St------Little West St & 1 Pl------South End Ave & Liberty St---
+35 : ---South End Ave & Liberty St---Little West St & 1 Pl------South End Ave & Liberty St------Little West St & 1 Pl------South End Ave & Liberty St------Hudson St & Reade St---
+75 : ---Little West St & 1 Pl---South End Ave & Liberty St------Little West St & 1 Pl------South End Ave & Liberty St------Little West St & 1 Pl------South St & Whitehall St---
+75 : ---South End Ave & Liberty St---Little West St & 1 Pl------South St & Whitehall St------Little West St & 1 Pl------South End Ave & Liberty St------Hudson St & Reade St---
+150 : ---Little West St & 1 Pl---South End Ave & Liberty St------Little West St & 1 Pl------South St & Whitehall St------Little West St & 1 Pl------South End Ave & Liberty St---
+175 : ---South End Ave & Liberty St---Little West St & 1 Pl------South St & Whitehall St------Little West St & 1 Pl------South St & Whitehall St------Little West St & 1 Pl---
+200 : ---Little West St & 1 Pl---South End Ave & Liberty St------Little West St & 1 Pl------South St & Whitehall St------Little West St & 1 Pl------South St & Whitehall St---
+300 : ---South End Ave & Liberty St---Little West St & 1 Pl------South End Ave & Liberty St------Little West St & 1 Pl------South St & Whitehall St------Little West St & 1 Pl---
+bike trips state in day 5
+========================
+eventCn 366329
+#full Match 74723
+#high latecny (> 150)508
+#NumPartialMatch 1064971
+15 : ---Henry St & Poplar St---Old Fulton St------Henry St & Poplar St------Old Fulton St------Henry St & Poplar St------Columbia Heights & Cranberry St---
+15 : ---Hicks St & Montague St---Old Fulton St------Henry St & Poplar St------Old Fulton St------Henry St & Poplar St------Old Fulton St---
+20 : ---Coffey St & Conover St---Hicks St & Montague St------Old Fulton St------Henry St & Poplar St------Old Fulton St------Henry St & Poplar St---
+20 : ---Hicks St & Montague St---Old Fulton St------Henry St & Poplar St------Old Fulton St------Henry St & Poplar St------Columbia Heights & Cranberry St---
+21 : ---Old Fulton St---Henry St & Poplar St------Old Fulton St------Henry St & Poplar St------Old Fulton St------Henry St & Poplar St---
+bike trips state in day 6
+========================
+eventCn 423609
+#full Match 81261
+#high latecny (> 150)510
+#NumPartialMatch 1214386
+12 : ---Little West St & 1 Pl---Broadway & Battery Pl------South St & Gouverneur Ln------Front St & Maiden Ln------Fulton St & William St------Madison St & Clinton St---
+12 : ---Little West St & 1 Pl---West Thames St------Little West St & 1 Pl------Broadway & Battery Pl------South St & Gouverneur Ln------Front St & Maiden Ln---
+12 : ---Maiden Ln & Pearl St---West St & Chambers St------West Thames St------Little West St & 1 Pl------Broadway & Battery Pl------Little West St & 1 Pl---
+16 : ---Little West St & 1 Pl---Broadway & Battery Pl------South St & Gouverneur Ln------Front St & Maiden Ln------South St & Gouverneur Ln------Front St & Maiden Ln---
+16 : ---South St & Gouverneur Ln---Maiden Ln & Pearl St------West St & Chambers St------West Thames St------Little West St & 1 Pl------Broadway & Battery Pl---
+18 : ---Broadway & Battery Pl---Little West St & 1 Pl------Broadway & Battery Pl------South St & Gouverneur Ln------Front St & Maiden Ln------Fulton St & William St---
+18 : ---Broadway & Battery Pl---Little West St & 1 Pl------Broadway & Battery Pl------South St & Gouverneur Ln------Front St & Maiden Ln------South St & Gouverneur Ln---
+20 : ---West St & Chambers St---West Thames St------Little West St & 1 Pl------Broadway & Battery Pl------Little West St & 1 Pl------Broadway & Battery Pl---
+20 : ---West Thames St---Little West St & 1 Pl------Broadway & Battery Pl------Little West St & 1 Pl------Broadway & Battery Pl------South St & Gouverneur Ln---
+24 : ---West St & Chambers St---West Thames St------Little West St & 1 Pl------Broadway & Battery Pl------South St & Gouverneur Ln------Front St & Maiden Ln---
+24 : ---West Thames St---Little West St & 1 Pl------Broadway & Battery Pl------South St & Gouverneur Ln------Front St & Maiden Ln------Fulton St & William St---
+24 : ---West Thames St---Little West St & 1 Pl------Broadway & Battery Pl------South St & Gouverneur Ln------Front St & Maiden Ln------South St & Gouverneur Ln---
+30 : ---Little West St & 1 Pl---Broadway & Battery Pl------Little West St & 1 Pl------Broadway & Battery Pl------South St & Gouverneur Ln------Front St & Maiden Ln---
+bike trips state in day 7
+========================
+eventCn 484057
+#full Match 88303
+#high latecny (> 150)513
+#NumPartialMatch 1375687
+bike trips state in day 8
+========================
+eventCn 541943
+#full Match 95417
+#high latecny (> 150)513
+#NumPartialMatch 1523954
+bike trips state in day 9
+========================
+eventCn 615604
+#full Match 109528
+#high latecny (> 150)519
+#NumPartialMatch 1734283
+bike trips state in day 10
+========================
+eventCn 692475
+#full Match 125496
+#high latecny (> 150)583
+#NumPartialMatch 1957206
+12 : ---Avenue D & E 3 St---E 10 St & Avenue A------Avenue D & E 8 St------E 10 St & Avenue A------Avenue D & E 12 St------E 10 St & Avenue A---
+12 : ---Central Park West & W 68 St---W 47 St & 10 Ave------W 27 St & 10 Ave------9 Ave & W 28 St------W 27 St & 10 Ave------9 Ave & W 28 St---
+12 : ---E 10 St & Avenue A---Avenue D & E 8 St------E 10 St & Avenue A------Avenue D & E 12 St------E 10 St & Avenue A------E 6 St & Avenue D---
+12 : ---E 10 St & Avenue A---E 5 St & Avenue C------E 10 St & Avenue A------Avenue D & E 8 St------E 10 St & Avenue A------E 6 St & Avenue D---
+12 : ---E 10 St & Avenue A---E 5 St & Avenue C------E 2 St & Avenue B------Avenue D & E 3 St------E 10 St & Avenue A------Avenue D & E 8 St---
+12 : ---E 2 St & Avenue B---Avenue D & E 3 St------E 10 St & Avenue A------Avenue D & E 8 St------E 10 St & Avenue A------E 6 St & Avenue D---
+12 : ---E 5 St & Avenue C---E 10 St & Avenue A------Avenue D & E 8 St------E 10 St & Avenue A------Avenue D & E 12 St------E 10 St & Avenue A---
+12 : ---E 5 St & Avenue C---E 2 St & Avenue B------Avenue D & E 3 St------E 10 St & Avenue A------Avenue D & E 8 St------E 10 St & Avenue A---
+12 : ---St Marks Pl & 1 Ave---E 10 St & Avenue A------Avenue D & E 8 St------E 10 St & Avenue A------Avenue D & E 12 St------E 10 St & Avenue A---
+12 : ---St Marks Pl & 1 Ave---E 10 St & Avenue A------E 5 St & Avenue C------E 10 St & Avenue A------Avenue D & E 8 St------E 10 St & Avenue A---
+12 : ---W 27 St & 10 Ave---9 Ave & W 28 St------W 27 St & 10 Ave------9 Ave & W 28 St------W 26 St & 8 Ave------W 49 St & 8 Ave---
+12 : ---W 47 St & 10 Ave---W 27 St & 10 Ave------9 Ave & W 28 St------W 27 St & 10 Ave------9 Ave & W 28 St------W 26 St & 8 Ave---
+15 : ---Little West St & 1 Pl---Water - Whitehall Plaza------Little West St & 1 Pl------Water - Whitehall Plaza------Little West St & 1 Pl------Duane St & Greenwich St---
+15 : ---Water - Whitehall Plaza---Little West St & 1 Pl------South St & Whitehall St------Little West St & 1 Pl------Duane St & Greenwich St------Fulton St & William St---
+18 : ---E 10 St & Avenue A---E 5 St & Avenue C------E 10 St & Avenue A------Avenue D & E 8 St------E 10 St & Avenue A------Avenue D & E 12 St---
+18 : ---E 2 St & Avenue B---Avenue D & E 3 St------E 10 St & Avenue A------Avenue D & E 8 St------E 10 St & Avenue A------Avenue D & E 12 St---
+20 : ---Water - Whitehall Plaza---Little West St & 1 Pl------Water - Whitehall Plaza------Little West St & 1 Pl------Duane St & Greenwich St------Fulton St & William St---
+21 : ---Water - Whitehall Plaza---Little West St & 1 Pl------Water - Whitehall Plaza------Little West St & 1 Pl------Water - Whitehall Plaza------Little West St & 1 Pl---
+30 : ---Little West St & 1 Pl---Water - Whitehall Plaza------Little West St & 1 Pl------South St & Whitehall St------Little West St & 1 Pl------Duane St & Greenwich St---
+30 : ---Little West St & 1 Pl---Water - Whitehall Plaza------Little West St & 1 Pl------Water - Whitehall Plaza------Little West St & 1 Pl------South St & Whitehall St---
+60 : ---Water - Whitehall Plaza---Little West St & 1 Pl------Water - Whitehall Plaza------Little West St & 1 Pl------South St & Whitehall St------Little West St & 1 Pl---
+bike trips state in day 11
+========================
+eventCn 738917
+#full Match 130311
+#high latecny (> 150)584
+#NumPartialMatch 2067085
+bike trips state in day 12
+========================
+eventCn 805665
+#full Match 141537
+#high latecny (> 150)590
+#NumPartialMatch 2251230
+bike trips state in day 13
+========================
+eventCn 859844
+#full Match 147914
+#high latecny (> 150)592
+#NumPartialMatch 2393496
+bike trips state in day 14
+========================
+eventCn 913455
+#full Match 153413
+#high latecny (> 150)595
+#NumPartialMatch 2530329
+bike trips state in day 15
+========================
+eventCn 971882
+#full Match 161281
+#high latecny (> 150)596
+#NumPartialMatch 2681216
+bike trips state in day 16
+========================
+eventCn 1037478
+#full Match 170550
+#high latecny (> 150)599
+#NumPartialMatch 2852627
+bike trips state in day 17
+========================
+eventCn 1104745
+#full Match 180175
+#high latecny (> 150)601
+#NumPartialMatch 3028671
+bike trips state in day 18
+========================
+eventCn 1165712
+#full Match 187898
+#high latecny (> 150)603
+#NumPartialMatch 3183069
+11 : ---E 10 St & Avenue A---E 10 St & Avenue A------E 10 St & Avenue A------E 10 St & Avenue A------E 10 St & Avenue A------E 10 St & Avenue A---
+15 : ---E 10 St & Avenue A---E 10 St & Avenue A------E 10 St & Avenue A------E 10 St & Avenue A------E 10 St & Avenue A------Grand St & Elizabeth St---
+bike trips state in day 19
+========================
+eventCn 1229686
+#full Match 195654
+#high latecny (> 150)605
+#NumPartialMatch 3345971
+bike trips state in day 20
+========================
+eventCn 1285556
+#full Match 200932
+#high latecny (> 150)606
+#NumPartialMatch 3485043
+15 : ---Little West St & 1 Pl---South End Ave & Liberty St------Vesey Pl & River Terrace------South End Ave & Liberty St------Vesey Pl & River Terrace------South End Ave & Liberty St---
+15 : ---South End Ave & Liberty St---Vesey Pl & River Terrace------South End Ave & Liberty St------Vesey Pl & River Terrace------South End Ave & Liberty St------Little West St & 1 Pl---
+bike trips state in day 21
+========================
+eventCn 1324307
+#full Match 203481
+#high latecny (> 150)606
+#NumPartialMatch 3571942
+bike trips state in day 22
+========================
+eventCn 1381475
+#full Match 210435
+#high latecny (> 150)606
+#NumPartialMatch 3714957
+21 : ---Avenue D & E 8 St---E 10 St & Avenue A------Avenue D & E 8 St------E 10 St & Avenue A------Avenue D & E 8 St------E 10 St & Avenue A---
+35 : ---E 55 St & 3 Ave---E 10 St & Avenue A------Avenue D & E 8 St------E 10 St & Avenue A------Avenue D & E 8 St------E 10 St & Avenue A---
+56 : ---E 10 St & Avenue A---Avenue D & E 8 St------E 10 St & Avenue A------Avenue D & E 8 St------E 10 St & Avenue A------Avenue D & E 8 St---
+bike trips state in day 23
+========================
+eventCn 1448628
+#full Match 219788
+#high latecny (> 150)608
+#NumPartialMatch 3890322
+bike trips state in day 24
+========================
+eventCn 1511923
+#full Match 227550
+#high latecny (> 150)610
+#NumPartialMatch 4049940
+12 : ---Central Park West & W 72 St---Central Park West & W 68 St------Central Park West & W 72 St------W 63 St & Broadway------W 67 St & Broadway------Central Park West & W 68 St---
+20 : ---Central Park West & W 68 St---Central Park West & W 72 St------Central Park West & W 68 St------Central Park West & W 72 St------W 63 St & Broadway------W 67 St & Broadway---
+bike trips state in day 25
+========================
+eventCn 1572806
+#full Match 234348
+#high latecny (> 150)610
+#NumPartialMatch 4199766
+15 : ---Lafayette St & E 8 St---E 10 St & Avenue A------E 10 St & Avenue A------E 10 St & Avenue A------E 10 St & Avenue A------E 10 St & Avenue A---
+20 : ---Great Jones St---Lafayette St & E 8 St------E 10 St & Avenue A------E 10 St & Avenue A------E 10 St & Avenue A------E 10 St & Avenue A---
+bike trips state in day 26
+========================
+eventCn 1631939
+#full Match 240659
+#high latecny (> 150)612
+#NumPartialMatch 4344025
+bike trips state in day 27
+========================
+eventCn 1644935
+#full Match 245593
+#high latecny (> 150)4538
+#NumPartialMatch 4373027
+11 : ---W 15 St & 7 Ave---Gansevoort St & Hudson St------W 15 St & 10 Ave------W 22 St & 10 Ave------W 34 St & 11 Ave------W 37 St & 10 Ave---
+11 : ---W 37 St & 10 Ave---W 34 St & 11 Ave------W 22 St & 10 Ave------W 20 St & 11 Ave------W 18 St & 9 Ave------Gansevoort St & Hudson St---
+66 : ---Gansevoort St & Hudson St---W 15 St & 10 Ave------W 22 St & 10 Ave------W 34 St & 11 Ave------W 37 St & 10 Ave------W 34 St & 11 Ave---
+66 : ---W 15 St & 10 Ave---W 22 St & 10 Ave------W 34 St & 11 Ave------W 37 St & 10 Ave------W 34 St & 11 Ave------W 22 St & 10 Ave---
+66 : ---W 22 St & 10 Ave---W 34 St & 11 Ave------W 37 St & 10 Ave------W 34 St & 11 Ave------W 22 St & 10 Ave------W 20 St & 11 Ave---
+66 : ---W 34 St & 11 Ave---W 37 St & 10 Ave------W 34 St & 11 Ave------W 22 St & 10 Ave------W 20 St & 11 Ave------W 18 St & 9 Ave---
+220 : ---W 15 St & 10 Ave---W 22 St & 10 Ave------W 34 St & 11 Ave------W 37 St & 10 Ave------W 34 St & 11 Ave------W 37 St & 10 Ave---
+220 : ---W 37 St & 10 Ave---W 34 St & 11 Ave------W 37 St & 10 Ave------W 34 St & 11 Ave------W 22 St & 10 Ave------W 20 St & 11 Ave---
+715 : ---W 22 St & 10 Ave---W 34 St & 11 Ave------W 37 St & 10 Ave------W 34 St & 11 Ave------W 37 St & 10 Ave------W 34 St & 11 Ave---
+715 : ---W 34 St & 11 Ave---W 37 St & 10 Ave------W 34 St & 11 Ave------W 37 St & 10 Ave------W 34 St & 11 Ave------W 22 St & 10 Ave---
+1287 : ---W 34 St & 11 Ave---W 37 St & 10 Ave------W 34 St & 11 Ave------W 37 St & 10 Ave------W 34 St & 11 Ave------W 37 St & 10 Ave---
+1287 : ---W 37 St & 10 Ave---W 34 St & 11 Ave------W 37 St & 10 Ave------W 34 St & 11 Ave------W 37 St & 10 Ave------W 34 St & 11 Ave---
+bike trips state in day 28
+========================
+eventCn 1687072
+#full Match 248139
+#high latecny (> 150)4538
+#NumPartialMatch 4467285
+bike trips state in day 29
+========================
+eventCn 1746275
+#full Match 256404
+#high latecny (> 150)5792
+#NumPartialMatch 4614964
+45 : ---Central Park W & W 96 St---W 95 St & Broadway------W 89 St & Columbus Ave------W 84 St & Columbus Ave------W 89 St & Columbus Ave------Grand Army Plaza & Central Park S---
+45 : ---W 89 St & Columbus Ave---W 84 St & Columbus Ave------W 89 St & Columbus Ave------Grand Army Plaza & Central Park S------Columbus Ave & W 72 St------W 63 St & Broadway---
+45 : ---W 95 St & Broadway---W 89 St & Columbus Ave------W 84 St & Columbus Ave------W 89 St & Columbus Ave------Grand Army Plaza & Central Park S------Columbus Ave & W 72 St---
+120 : ---Central Park W & W 96 St---W 95 St & Broadway------W 89 St & Columbus Ave------W 84 St & Columbus Ave------W 89 St & Columbus Ave------W 84 St & Columbus Ave---
+120 : ---W 84 St & Columbus Ave---W 89 St & Columbus Ave------W 84 St & Columbus Ave------W 89 St & Columbus Ave------Grand Army Plaza & Central Park S------Columbus Ave & W 72 St---
+330 : ---W 89 St & Columbus Ave---W 84 St & Columbus Ave------W 89 St & Columbus Ave------W 84 St & Columbus Ave------W 89 St & Columbus Ave------Grand Army Plaza & Central Park S---
+330 : ---W 95 St & Broadway---W 89 St & Columbus Ave------W 84 St & Columbus Ave------W 89 St & Columbus Ave------W 84 St & Columbus Ave------W 89 St & Columbus Ave---
+462 : ---W 84 St & Columbus Ave---W 89 St & Columbus Ave------W 84 St & Columbus Ave------W 89 St & Columbus Ave------W 84 St & Columbus Ave------W 89 St & Columbus Ave---
+462 : ---W 89 St & Columbus Ave---W 84 St & Columbus Ave------W 89 St & Columbus Ave------W 84 St & Columbus Ave------W 89 St & Columbus Ave------W 84 St & Columbus Ave---
+bike trips state in day 30
+========================
+eventCn 1810925
+#full Match 264193
+#high latecny (> 150)5793
+#NumPartialMatch 4776114
+15 : ---Duane St & Greenwich St---Pier 40 - Hudson River Park------Greenwich St & W Houston St------Pier 40 - Hudson River Park------Greenwich St & W Houston St------Pier 40 - Hudson River Park---
+15 : ---Pier 40 - Hudson River Park---Greenwich St & W Houston St------Pier 40 - Hudson River Park------Greenwich St & W Houston St------Pier 40 - Hudson River Park------Duane St & Greenwich St---
+15 : ---W 26 St & 10 Ave---W 26 St & 8 Ave------9 Ave & W 22 St------8 Ave & W 31 St------9 Ave & W 28 St------8 Ave & W 31 St---
+15 : ---W 26 St & 8 Ave---9 Ave & W 22 St------8 Ave & W 31 St------9 Ave & W 28 St------8 Ave & W 31 St------1 Ave & E 16 St---
+20 : ---E 39 St & 2 Ave---E 39 St & 2 Ave------E 39 St & 2 Ave------E 39 St & 2 Ave------E 39 St & 3 Ave------E 39 St & 3 Ave---
+20 : ---W 26 St & 8 Ave---9 Ave & W 22 St------8 Ave & W 31 St------9 Ave & W 28 St------8 Ave & W 31 St------9 Ave & W 28 St---
+21 : ---8 Ave & W 31 St---9 Ave & W 28 St------8 Ave & W 31 St------9 Ave & W 28 St------8 Ave & W 31 St------9 Ave & W 28 St---
+21 : ---9 Ave & W 28 St---8 Ave & W 31 St------9 Ave & W 28 St------8 Ave & W 31 St------9 Ave & W 28 St------8 Ave & W 31 St---
+35 : ---8 Ave & W 31 St---9 Ave & W 28 St------8 Ave & W 31 St------9 Ave & W 28 St------8 Ave & W 31 St------1 Ave & E 16 St---
+35 : ---9 Ave & W 22 St---8 Ave & W 31 St------9 Ave & W 28 St------8 Ave & W 31 St------9 Ave & W 28 St------8 Ave & W 31 St---
+231 : ---Bressler---Bressler------Bressler------Bressler------Bressler------Bressler---
+bike trips state in day 31
+========================
+event stream queue is empty now!
+eventCn 1878403
+#full Match 272339
+#high latecny (> 150)5836
+#NumPartialMatch 4944846
+15 : ---11 Ave & W 27 St---W 34 St & 11 Ave------11 Ave & W 27 St------W 20 St & 11 Ave------Duane St & Greenwich St------Grand St & Greene St---
+21 : ---Broadway & W 38 St---W 15 St & 10 Ave------11 Ave & W 27 St------W 34 St & 11 Ave------11 Ave & W 27 St------W 20 St & 11 Ave---
+21 : ---W 15 St & 10 Ave---11 Ave & W 27 St------W 34 St & 11 Ave------11 Ave & W 27 St------W 20 St & 11 Ave------Duane St & Greenwich St---
+35 : ---Broadway & W 38 St---W 15 St & 10 Ave------11 Ave & W 27 St------W 34 St & 11 Ave------11 Ave & W 27 St------W 34 St & 11 Ave---
+35 : ---W 34 St & 11 Ave---11 Ave & W 27 St------W 34 St & 11 Ave------11 Ave & W 27 St------W 20 St & 11 Ave------Duane St & Greenwich St---
+56 : ---11 Ave & W 27 St---W 34 St & 11 Ave------11 Ave & W 27 St------W 34 St & 11 Ave------11 Ave & W 27 St------W 34 St & 11 Ave---
+56 : ---W 34 St & 11 Ave---11 Ave & W 27 St------W 34 St & 11 Ave------11 Ave & W 27 St------W 34 St & 11 Ave------11 Ave & W 27 St---
+70 : ---11 Ave & W 27 St---W 34 St & 11 Ave------11 Ave & W 27 St------W 34 St & 11 Ave------11 Ave & W 27 St------W 20 St & 11 Ave---
+70 : ---W 15 St & 10 Ave---11 Ave & W 27 St------W 34 St & 11 Ave------11 Ave & W 27 St------W 34 St & 11 Ave------11 Ave & W 27 St---

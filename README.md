@@ -53,7 +53,8 @@ F. In order to run the CEP engine, you need a simple script like:
    
    the arguments of the command line is reflected in the main function in cep_match.cpp, which are very straightforward and self explained.
 
-   in the above specific query, 
+   For the above specific query, 
+   
    -c                          ./Synthetic.eql  means the event schema and query configuration file ./Synthetic.eql. 
    
    -q P1                       means to evaluate  query P1.
@@ -74,7 +75,7 @@ F. In order to run the CEP engine, you need a simple script like:
 =====================================================================================
 
 real-world data sets: NYC bike-sharing. 
-Links of the data sets: https://www.citibikenyc.com/system-data
+The link of the data sets: https://www.citibikenyc.com/system-data
 
 A. Transform the time stamp/ data cleaning
    run CleanData.py for 201810-citibike-tripdata.csv data set and get the cleaned data.
@@ -87,10 +88,10 @@ C. Complie the code:
    2.  make -f MakefileCM
 
 D. Run the experiments.
-   An example is as  ./AthenaCEP/bike_sharing_data/query_p1.sh
+   An example is illustrated in ./AthenaCEP/bike_sharing_data/query_p1.sh
 
 =====================================================================================
-Please feel free to contact me by  bo.zhao "at" hu-berlin.de, if you have any questions. 
+Please feel free to drop me an e-mail at bo.zhao "at" hu-berlin.de, if you have any questions. 
 
-https://hu.berlin/bo_zhao
+Or visit https://hu.berlin/bo_zhao
 

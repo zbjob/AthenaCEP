@@ -16,7 +16,7 @@ To compile the code in Linux:
 
 =======================================================================================
 
-Synthetic datas:
+Synthetic data sets:
 To run the experiments:
 A. Generate synthetic datas
    1. cd  ./AthenaCEP/src_synthetic/NormalEventStreamGen/
@@ -48,3 +48,10 @@ F. In order to run the CEP engine, you need a simple script like:
           latency_P1NS.csv      contains the record of latency for every complete matches.
           
 =====================================================================================
+
+real-world data sets: NYC bike-sharing. 
+Links of the data sets: https://www.citibikenyc.com/system-data
+
+A. Transform the time stamp/ data cleaning
+B. Set the path of the data source in main function.
+C. Run the experiments.

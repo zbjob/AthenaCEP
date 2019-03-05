@@ -15,6 +15,7 @@ To compile the code in Linux:
 3. the executable file is   /AthenaCEP/src_synthetic/src_NS/bin/cep_match
 
 =======================================================================================
+
 Synthetic datas:
 To run the experiments:
 A. Generate synthetic datas

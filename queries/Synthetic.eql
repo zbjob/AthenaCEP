@@ -1,0 +1,158 @@
+
+TYPE A{
+    timestamp,
+    v1,
+    event_id
+};
+
+TYPE B{
+    timestamp,
+    v1,
+    event_id
+};
+
+TYPE C{
+    timestamp,
+    v1,
+    event_id
+};
+
+
+TYPE D{
+    timestamp,
+    v1,
+    event_id
+};
+
+QUERY P1
+EVENT SEQ(A a, B b, C c)
+WHERE [event_id]   
+WITHIN 1ms 
+RETURN GReturn3(a.timestamp, b.timestamp, c.timestamp, a.event_id, a.v1, b.v1, c.v1 );
+
+QUERY P2
+EVENT SEQ(A a, B b, C c)
+WHERE [event_id]   
+WITHIN 2ms 
+RETURN GReturn3(a.timestamp, b.timestamp, c.timestamp, a.event_id, a.v1, b.v1, c.v1 );
+
+QUERY P3
+EVENT SEQ(A a, B b, C c)
+WHERE [event_id]   
+WITHIN 4ms 
+RETURN GReturn3(a.timestamp, b.timestamp, c.timestamp, a.event_id, a.v1, b.v1, c.v1 );
+
+QUERY P4
+EVENT SEQ(A a, B b, C c)
+WHERE [event_id]   
+WITHIN 8ms 
+RETURN GReturn3(a.timestamp, b.timestamp, c.timestamp, a.event_id, a.v1, b.v1, c.v1 );
+
+QUERY P5
+EVENT SEQ(A a, B b, C c)
+WHERE [event_id]   
+WITHIN 16ms 
+RETURN GReturn3(a.timestamp, b.timestamp, c.timestamp, a.event_id, a.v1, b.v1, c.v1 );
+
+QUERY P6
+EVENT SEQ(A a, B b, C c)
+WHERE [event_id]   
+WITHIN 32ms 
+RETURN GReturn3(a.timestamp, b.timestamp, c.timestamp, a.event_id, a.v1, b.v1, c.v1 );
+
+QUERY P7
+EVENT SEQ(A a, B b, D d, D e, C c)
+WHERE [event_id] && d.v1==e.v1  
+WITHIN 1ms 
+RETURN GReturn3(a.timestamp, b.timestamp, c.timestamp, a.event_id, a.v1, b.v1, c.v1 );
+
+QUERY P8
+EVENT SEQ(A a, B b, D d, C c)
+WHERE [event_id]  
+WITHIN 1ms 
+RETURN GReturn3(a.timestamp, b.timestamp, c.timestamp, a.event_id, a.v1, b.v1, c.v1 );
+
+QUERY P9
+EVENT SEQ(A a, B b, D d, D e, C c)
+WHERE [event_id]  
+WITHIN 1ms 
+RETURN GReturn3(a.timestamp, b.timestamp, c.timestamp, a.event_id, a.v1, b.v1, c.v1 );
+
+QUERY P10
+EVENT SEQ(A a, B b, A d, C c)
+WHERE [event_id]  
+WITHIN 1ms 
+RETURN GReturn3(a.timestamp, b.timestamp, c.timestamp, a.event_id, a.v1, b.v1, c.v1 );
+
+QUERY P11
+EVENT SEQ(A a, B b, C c)
+WHERE [event_id]  
+WITHIN 1ms 
+RETURN GReturn3(a.timestamp, b.timestamp, c.timestamp, a.event_id, a.v1, b.v1, c.v1 );
+
+QUERY P12
+EVENT SEQ(A a, B b, A d, C c)
+WHERE [event_id] && a.v1==d.v1 
+WITHIN 1ms 
+RETURN GReturn3(a.timestamp, b.timestamp, c.timestamp, a.event_id, a.v1, b.v1, c.v1 );
+
+QUERY P13
+EVENT SEQ(A a, B b, A d, A e, C c)
+WHERE [event_id] && a.v1==d.v1 && a.v1==e.v1  
+WITHIN 1ms 
+RETURN GReturn3(a.timestamp, b.timestamp, c.timestamp, a.event_id, a.v1, b.v1, c.v1 );
+
+QUERY P14
+EVENT SEQ(A a, B b, A d, A e, A f, C c)
+WHERE [event_id] && a.v1==d.v1 && a.v1==e.v1  && a.v1==f.v1 
+WITHIN 1ms 
+RETURN GReturn3(a.timestamp, b.timestamp, c.timestamp, a.event_id, a.v1, b.v1, c.v1 );
+
+QUERY P15
+EVENT SEQ(A a, B b, A d, A e, A f, A g, C c)
+WHERE [event_id] && a.v1==d.v1 && a.v1==e.v1  && a.v1==f.v1 && a.v1==g.v1 
+WITHIN 1ms 
+RETURN GReturn3(a.timestamp, b.timestamp, c.timestamp, a.event_id, a.v1, b.v1, c.v1 );
+
+QUERY P16
+EVENT SEQ(A a, B b, A d, A e, A f, A g, A h, C c)
+WHERE [event_id] && a.v1==d.v1 && a.v1==e.v1  && a.v1==f.v1 && a.v1==g.v1 && a.v1==h.v1 
+WITHIN 1ms 
+RETURN GReturn3(a.timestamp, b.timestamp, c.timestamp, a.event_id, a.v1, b.v1, c.v1 );
+
+QUERY P17
+EVENT SEQ(A a, B b, A d, A e, A f, A g, A h, A i, C c)
+WHERE [event_id] && a.v1==d.v1 && a.v1==e.v1  && a.v1==f.v1 && a.v1==g.v1 && a.v1==h.v1 && a.v1==i.v1 
+WITHIN 1ms 
+RETURN GReturn3(a.timestamp, b.timestamp, c.timestamp, a.event_id, a.v1, b.v1, c.v1 );
+
+QUERY P18
+EVENT SEQ(A a, B b, A d, A e, A f, A g, A h, A i, A j, C c)
+WHERE [event_id] && a.v1==d.v1 && a.v1==e.v1  && a.v1==f.v1 && a.v1==g.v1 && a.v1==h.v1 && a.v1==i.v1 && a.v1==j.v1 
+WITHIN 1ms 
+RETURN GReturn3(a.timestamp, b.timestamp, c.timestamp, a.event_id, a.v1, b.v1, c.v1 );
+
+QUERY P19
+EVENT SEQ(A a, B b, A d, A e, A f, A g, A h, A i, A j, A k, C c)
+WHERE [event_id] && a.v1==d.v1 && a.v1==e.v1  && a.v1==f.v1 && a.v1==g.v1 && a.v1==h.v1 && a.v1==i.v1 && a.v1==j.v1 && a.v1==k.v1 
+WITHIN 1ms 
+RETURN GReturn3(a.timestamp, b.timestamp, c.timestamp, a.event_id, a.v1, b.v1, c.v1 );
+
+QUERY P20
+EVENT SEQ(A a, B b, A d, A e, A f, A g, A h, A i, A j, A k, A l, C c)
+WHERE [event_id] && a.v1==d.v1 && a.v1==e.v1  && a.v1==f.v1 && a.v1==g.v1 && a.v1==h.v1 && a.v1==i.v1 && a.v1==j.v1 && a.v1==k.v1 && a.v1==l.v1 
+WITHIN 1ms 
+RETURN GReturn3(a.timestamp, b.timestamp, c.timestamp, a.event_id, a.v1, b.v1, c.v1 );
+
+QUERY P21
+EVENT SEQ(A a, B b, C c)
+WHERE [event_id]   
+WITHIN 2ms 
+RETURN GReturn3(a.timestamp, a.v1, a.event_id, b.timestamp, b.v1, c.timestamp, c.v1 );
+
+QUERY P22
+EVENT SEQ(A a, B b, C c)
+WHERE [event_id]   
+WITHIN 1ms 
+RETURN GReturn3(a.timestamp, a.v1, a.event_id, b.timestamp, b.v1, c.timestamp, c.v1 );
+

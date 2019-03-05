@@ -18,6 +18,15 @@ To compile the code in Linux:
 2. make -f MakefileCM 
 3. the executable file is   /AthenaCEP/src_synthetic/src_NS/bin/cep_match
 
+A parser for CEP query has also been implemented, based on Lex and Yacc.
+
+CEP queries for synthetic data sets have been defined in AthenaCEP/queries/Synthetic.eql
+
+CEP queries for real-world data sets, NYC bike sharing data, have been defined in AthenaCEP/queries/Bike.eql
+
+parsing the event schema & queries, and constructing the CEP engine are automatically done. 
+
+
 =======================================================================================
 
 Synthetic data sets:
@@ -40,10 +49,16 @@ D. The offile estmation Python code is in  ./AthenaCEP/src_synthetic/python-clus
 
 F. In order to run the CEP engine, you need a simple script like:
 
-./AthenaCEP/src_synthetic/src_NS//bin/cep_match -c ./PMDist_new.eql -q P1 -s -n P1NS -p monitoring_P1NS.csv > runInfor_P1NS.txt
+./AthenaCEP/src_synthetic/src_NS//bin/cep_match -c ./Synthetic.eql -q P1 -s -n P1NS -p monitoring_P1NS.csv > runInfor_P1NS.txt
    
    the arguments of the command line is reflected in the main function in cep_match.cpp, which are very straightforward and self explained.
-   
+
+   in the above specific query, -c ./Synthetic.eql  means the event schema and query configuration file ./Synthetic.eql. 
+        -q P1                       means to evaluate  query P1.
+        -n P1NS                     means the prefix of generated results and  static files
+        -s                          means to appendi the timestamps for events appeared in partial matches and complete matches.
+        -p monitoring_P1NS.csv      means to dump the throughput information to the file monitoring_P1NS.csv 
+        
    more scripts are attached in the repository.
    
    Three files will be generated after evaluation: take the above example 

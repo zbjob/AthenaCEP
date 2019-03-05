@@ -1,7 +1,9 @@
 # AthenaCEP
 
 requirements for compilers: supporting C++11 or C++14.  G++, Clang has been tested.
+
 requirements for libraries: POSIX Threads(Pthreads), Python, scikit-learn
+
 optimizations have been implemented for intel X86 processors including memory alignment, improving cache hit ratio.
 
 

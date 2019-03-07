@@ -91,6 +91,8 @@ D. Run the experiments.
    An example is illustrated in ./AthenaCEP/bike_sharing_data/query_p1.sh
 
 =====================================================================================
+
+
 Please feel free to drop me an e-mail at bo.zhao "at" hu-berlin.de, if you have any questions. 
 
 Or visit https://hu.berlin/bo_zhao

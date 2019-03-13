@@ -1,6 +1,6 @@
 # AthenaCEP
 
-AthenaCEP aims at sovling the problem of load shedding in CEP. It provides a fundamentally new perspective to shed the exponentially increacing partial matches as well as input event tuples. It has the wisdom, as Athena, a Greek goddess, to decide when, what and how much partial matches or event tuples to drop in order to satisfy the strict latency bound and keeps the maximual accuracy. The secret is on her cost models...
+AthenaCEP aims at sovling the problem of load shedding in CEP. It provides a fundamentally new perspective to shed the exponentially increacing partial matches as well as input event tuples. It has the wisdom, as Athena, the Greek goddess  of wisdom, to decide when, what and how much partial matches or event tuples to drop in order to satisfy the strict latency bound and keeps the maximual accuracy. The secret is on her cost models...
 
 =====================================================================================
 

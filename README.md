@@ -1,13 +1,13 @@
 # AthenaCEP
+---
+AthenaCEP aims at solving the problem of load shedding in CEP. It provides a fundamentally new perspective to shed the exponentially increasing partial matches as well as input event tuples. It has the wisdom, as Athena, the Greek goddess  of wisdom, to decide when, what and how much partial matches or event tuples to drop in order to satisfy\ the strict latency bound and keep the maximum accuracy. 
+---
+## Prerequisites
 
-AthenaCEP aims at sovling the problem of load shedding in CEP. It provides a fundamentally new perspective to shed the exponentially increacing partial matches as well as input event tuples. It has the wisdom, as Athena, the Greek goddess  of wisdom, to decide when, what and how much partial matches or event tuples to drop in order to satisfy the strict latency bound and keeps the maximual accuracy. The secret is on her cost models...
-
-=====================================================================================
-
-requirements for compilers: supporting C++11 or C++14.  G++, Clang has been tested.
-
+* The compiler needs to support C++11 or higher. In Makefiles, the default compiler is set as g++.
 requirements for libraries: POSIX Threads(Pthreads), Python, scikit-learn
-
+*All running/configuration scripts are written for linux OS. Windows OS users need to change the paths accordingly (replace "/" with "\\").
+* We build parsers to parse query workloads from files. We define query workloads in files ending with `.eql`. 
 optimizations have been implemented for intel X86 processors including memory alignment, improving cache hit ratio.
 
 

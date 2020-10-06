@@ -16,12 +16,8 @@ class Bike_event
         attr_t end_time;
 
         attr_t start_station_id;
-        //double start_station_latitude;
-        //double start_station_longitude;
-
+        
         attr_t end_station_id;
-        //double end_station_latitude;
-        //double end_station_longitude;
         
         attr_t bike_id; 
 
@@ -29,6 +25,4 @@ class Bike_event
         attr_t user_birth;
         attr_t user_gender;
 
-
-        //duser_type,member_birth_year,member_gender,bike_share_for_all_trip;
 };

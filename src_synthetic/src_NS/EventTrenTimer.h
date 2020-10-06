@@ -16,7 +16,7 @@ public:
             {
                 ++m_Version;
                 m_Trigger = true;            
-                //++m_Version
+                
                 cout << "generate event B" << endl;
                 this_thread::sleep_for(chrono::seconds(m_DurationOn));
 
@@ -35,7 +35,6 @@ public:
             m_Thread.join();
         }
     }
-
 
 private:
     bool &       m_Trigger;

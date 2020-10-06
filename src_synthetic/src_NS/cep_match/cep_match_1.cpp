@@ -18,7 +18,6 @@
 using namespace std;
 using namespace std::chrono;
 
-//static time_point<high_resolution_clock> g_BeginClock;
 time_point<high_resolution_clock> g_BeginClock;
 long int NumFullMatch = 0;
 long int NumHighLatency = 0;
@@ -73,7 +72,7 @@ public:
 		{
 			m_MiningPrefix = _miningPrefix;
 			m_Miner.reset(new PredicateMiner(m_Definition, *m_Query));
-			_generateTimeoutEvents = true; // important for mining
+			_generateTimeoutEvents = true; 
 
 			for (size_t i = 0; i < m_Query->events.size() - 1; ++i)
 			{
@@ -121,7 +120,7 @@ public:
 		event.attributes[Query::DA_ZERO] = 0;
 		event.attributes[Query::DA_MAX] = numeric_limits<attr_t>::max();
 		event.attributes[Query::DA_CURRENT_TIME] = current_utime();
-		//event.attributes[Query::DA_CURRENT_TIME] = (uint64_t)duration_cast<microseconds>(high_resolution_clock::now() - g_BeginClock).count(); 
+		
 		event.attributes[Query::DA_OFFSET] = m_DefAttrOffset;
 		event.attributes[Query::DA_ID] = m_DefAttrId;
 
@@ -155,19 +154,10 @@ public:
     {
         for(auto&& it: m_Matcher.m_States)
         {
-            //std::cout << endl << "state contributions size == " << it.contributions.size() << endl;
-            //for(auto&& iter: it.contributions)
-                //cout << iter.first << "appears " << iter.second << "times" << endl;
-
-            //std::cout << endl << "state consumptions size == " << it.consumptions.size() << endl;
-            //for(auto&& iter: it.consumptions)
-            //    cout << iter.first << "appears " << iter.second << "times" << endl;
-            //std::cout << endl << "state scoreTable size == " << it.scoreTable.size() << endl;
-
+            
             if(!it.attr.empty())
             std::cout << "state size == " <<  it.attr.front().size() << endl;
 
-            
         }
     }
 
@@ -206,8 +196,6 @@ public:
 		dst.storeFile(eqlFilename.c_str());
 	}
 
-//protected:
-
 	void write_event(bool _timeout, uint32_t _state, const attr_t* _attributes)
 	{
 		StreamEvent r;
@@ -232,12 +220,6 @@ public:
 		for (auto it : m_OutEventAttrSrc)
 			*outattr_it++ = _attributes[it];
 
-
-        //cout << "latency  in write event" << _attributes[Query::DA_FULL_MATCH_TIME] << "--" <<   _attributes[Query::DA_CURRENT_TIME] << "--" << r.attributes[Query::DA_CURRENT_TIME] << endl; 
-
-		//r.write();
-
-        //monitoring load shedding: if latency exceeds threshold for 2 times, call load shedding
         uint64_t la = _attributes[Query::DA_FULL_MATCH_TIME] - _attributes[Query::DA_CURRENT_TIME]; 
         if(_attributes[Query::DA_FULL_MATCH_TIME] / 50000 == time / 50000)
         {
@@ -254,9 +236,7 @@ public:
             if(latency/cntFullMatch > LATENCY) ++NumHighLatency;
             if(latency/cntFullMatch > LATENCY && _attributes[Query::DA_FULL_MATCH_TIME] - lastSheddingTime > 3000000)
             {
-                //m_Matcher.randomLoadShedding();
-                //m_Matcher.loadShedding();
-                //m_Matcher.fixNumLoadShedding();
+                
                 lastSheddingTime = _attributes[Query::DA_FULL_MATCH_TIME];
                 ++loadCnt;
             }
@@ -268,31 +248,6 @@ public:
             
         }
         
-        //if(_attributes[Query::DA_FULL_MATCH_TIME] - _attributes[Query::DA_CURRENT_TIME] > LATENCY && _attributes[Query::DA_FULL_MATCH_TIME] - lastSheddingTime > 3000000)
-        //{
-        //    
-        //    if(m_Matcher.latencyFlag == true)
-        //    {
-        //        //lastSheddingTime = _attributes[Query::DA_FULL_MATCH_TIME]; 
-        //        //m_Matcher.loadShedding();
-        //        //m_Matcher.randomLoadShedding();
-        //        lastSheddingTime = _attributes[Query::DA_FULL_MATCH_TIME]; 
-        //        //++loadCnt;
-        //        
-        //    }
-
-        //    else
-        //        m_Matcher.latencyFlag = true;
-        //}
-        //else
-        //{
-        //    m_Matcher.latencyFlag = false;
-        //}
-
-
-        //////
-
-
 		if (m_Miner)
 		{
 			if (_timeout)
@@ -317,7 +272,6 @@ public:
 		}
 	}
 
-//private:
 	QueryLoader			m_Definition;
 	const Query*		m_Query;
 
@@ -344,11 +298,9 @@ public:
     uint64_t            Rtime;
     uint64_t            cntFullMatch;
 
-
     int loadCnt;
 };
 
-//bool PatternMatcher::loadMonitoringFlag = false;
 int main(int _argc, char* _argv[])
 {
 	init_utime();
@@ -401,10 +353,9 @@ int main(int _argc, char* _argv[])
 	if (monitorFile)
 		monitor.start(monitorFile);
 
-    //PatternMatcher::setMonitoringLoadOn();
     PatternMatcher::setMonitoringLoadOff();
     cout << "monitoring " << PatternMatcher::MonitoringLoad() << endl;
-    //int loadCnt = 0;
+    
 	while(prog.processEvent())
     {
 		eventCounter++;
@@ -416,30 +367,13 @@ int main(int _argc, char* _argv[])
             
             time_point<high_resolution_clock> t0 = high_resolution_clock::now();
             
-            //prog.m_Matcher.computeScores4LoadShedding();
-            //prog.m_Matcher.loadShedding();
-
             time_point<high_resolution_clock> t1 = high_resolution_clock::now();
             cout << "1st load shedding time " << duration_cast<microseconds>(t1 - t0).count() << endl;
-            //prog.loadCnt++;
-
+            
         }
 
-        //if(eventCounter > 100000 && eventCounter % 100000 == 1)
-        //{
-
-        //    time_point<high_resolution_clock> t0 = high_resolution_clock::now();
-        //    prog.m_Matcher.loadShedding();
-        //    time_point<high_resolution_clock> t1 = high_resolution_clock::now();
-        //    cout << "laod shedding time " << duration_cast<microseconds>(t1 - t0).count() << endl;
-        //    ++loadCnt;
-        //}
         }
     }
-
-
-        
-
 
 	prog.update_miner();
     prog.printContribution();

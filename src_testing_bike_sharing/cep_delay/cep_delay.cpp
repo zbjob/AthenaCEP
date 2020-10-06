@@ -9,8 +9,8 @@ using namespace std;
 
 int main(int _argc, char* _argv[])
 {
-	unsigned maxDelay = 10000000; // 10s
-	unsigned delayRatio = 100; // 1%
+	unsigned maxDelay = 10000000; 
+	unsigned delayRatio = 100; 
 	unsigned seed = 0xAB0816;
 
 	int c;

@@ -1,7 +1,4 @@
-//#include "../Query.h"
-//#include "../EventStream.h"
 
-//#include "../freegetopt/getopt.h"
 #include <utility> 
 #include <vector>
 #include <algorithm>
@@ -13,9 +10,7 @@
 #include <string>
 #include <tuple>
 
-
 typedef long int attr_t;
-//typedef long double attr_t;
 
 using namespace std;
 
@@ -27,7 +22,6 @@ int main(int _argc, char* _argv[])
     
     /*
 	const char* deffile = "default.eql";
-
 
 	int c;
 	while ((c = getopt(_argc, _argv, "c:")) != -1)
@@ -41,8 +35,6 @@ int main(int _argc, char* _argv[])
 			abort();
 		}
 	}
-
-
 
 	QueryLoader def;
 	if (!def.loadFile(deffile))
@@ -69,7 +61,7 @@ int main(int _argc, char* _argv[])
     const int cv1Idx = 7;
 
     const int timewindow = 2000;
-   // const int numTimeSlice = 3;
+   
     const int TTLSpan = timewindow/numTimeSlice+1 ;
     cout << TTLSpan << endl;
 
@@ -80,13 +72,6 @@ int main(int _argc, char* _argv[])
         cout << "can't open file " << inputfile << endl;
         return false;
     }
-
-
-    //cout << "output file 1" << outfile_1 << endl;
-
-    //cout << "output file 2" << outfile_2 << endl;
-
-
 
     /*
 	vector<string> col;
@@ -104,7 +89,6 @@ int main(int _argc, char* _argv[])
 	col.insert(col.begin(), definedCol, definedCol + sizeof(definedCol) / sizeof(definedCol[0]));
     */
 
-    // to clean data and merge duplicate attribute values in the output full matches
     vector<map<attr_t,attr_t> > PM_state_1_contribution(numTimeSlice);
     vector<map<attr_t,attr_t> > PM_state_1_consumption(numTimeSlice);
 
@@ -114,11 +98,9 @@ int main(int _argc, char* _argv[])
     vector<map<attr_t,attr_t> > event_a_contribution(numTimeSlice);
     vector<map<attr_t,attr_t> > event_a_consumption(numTimeSlice);
 
-    
     vector<map<attr_t,attr_t> > event_b_contribution(numTimeSlice);
     vector<map<attr_t,attr_t> > event_b_consumption(numTimeSlice);
     
-
     vector<map<attr_t,attr_t> > event_c_contribution(numTimeSlice);
 
     string line;
@@ -129,7 +111,6 @@ int main(int _argc, char* _argv[])
     attr_t ats = 0;
     attr_t bts = 0;
     attr_t cts = 0;
-
 
     while(getline(ifs,line))
     {
@@ -193,40 +174,20 @@ int main(int _argc, char* _argv[])
             ;
     }
 
-
-
-
-
     /*
 	StreamEvent::setupStdIo(stdin);
-
-	//for (const string& title : col)
-	//	printf("%s%s", title.c_str(), title == col.back() ? "" : ",");
-	//putchar('\n');
 
 	StreamEvent event;
 	while (event.read())
 	{
 		const EventDecl* decl = def.eventDecl(event.typeIndex);
 
-	//	printf("%s,%i,", decl->name.c_str(), (int)event.flags);
-
-	//	if (event.flags & StreamEvent::F_TIMESTAMP)
-	//		printf("%llu,", event.attributes[event.attributeCount - 1]);
-	//	else
-	//		putchar(',');
-
-	//	if (event.flags & StreamEvent::F_TIMEOUT)
-	//		printf("%i,", (int)event.timeoutState);
-	//	else
-	//		putchar(',');
-
 		for (size_t i = 1; i < col.size(); ++i)
 		{
 			vector<string>::const_iterator it = find(decl->attributes.begin(), decl->attributes.end(), col[i]);
 			if (it != decl->attributes.end())
 			{
-				//printf("%llu", event.attributes[it - decl->attributes.begin()]);
+				
                 if(i==4)
                 {
                     ++attr_1_contributions[(attr_t) event.attributes[it - decl->attributes.begin()]];
@@ -237,7 +198,6 @@ int main(int _argc, char* _argv[])
                 }
 			}
 			
-		//	putchar(i + 1 != col.size() ? ',' : '\n');
 		}
 	}
     */
@@ -248,8 +208,6 @@ int main(int _argc, char* _argv[])
     std::ofstream ofsPM1;
     ofsPM1.open(outfile_1.c_str());
     ofsPM1 << "av1, consumptions, contributions" << endl;
-
-
 
     std::ofstream ofsPM2;
     ofsPM2.open(outfile_2.c_str());
@@ -285,7 +243,6 @@ int main(int _argc, char* _argv[])
     }
     i =1;
 
-
     ofs << "===============================================" << endl
         << "contribution for event C on v1" << endl;
     for(auto const& it : event_c_contribution)
@@ -298,7 +255,6 @@ int main(int _argc, char* _argv[])
     }
     i=1;
 
-
     ofs << "===============================================" << endl
         << "consumption and contribution for partial match 1" << endl;
     for(auto const& it : PM_state_1_consumption)
@@ -309,13 +265,9 @@ int main(int _argc, char* _argv[])
         ofs << "===============================================" << endl;
         ++i;
 
-        //ofs << iter.first << " , " << iter.second << " , " << PM_state_1_contribution[iter.first] << endl;
-        //ofsPM1 << iter.first << " , " << iter.second << " , " << PM_state_1_contribution[iter.first] << endl;
     }
     i=1;
     
-
-
     ofs << "===============================================" << endl
         << "consumption and contribution for partial match 2" << endl;
     for(auto const& it : PM_state_2_consumption)
@@ -329,13 +281,8 @@ int main(int _argc, char* _argv[])
         ofs << "===============================================" << endl;
         ++i;
             
-        //ofs << iter.first <<  " , " << iter.second << " , " << PM_state_2_contribution[iter.first] << endl;
-        //ofsPM2 << iter.first << " , " << iter.second << " , " << PM_state_2_contribution[iter.first] << endl;
     }
     ofs.close();
-
-
-
 
     string _file = string("PM_state_2_2ms_")+to_string(numTimeSlice);
     ofs.open(_file.c_str());
@@ -388,7 +335,6 @@ int main(int _argc, char* _argv[])
         ++i;
     }
     ofs.close();
-
 
 	return 0;
 }

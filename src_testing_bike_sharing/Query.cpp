@@ -209,7 +209,7 @@ std::pair<uint32_t, uint32_t> QueryLoader::parseEventAttrId(Query& _q)
 			{
 				if (attrName[0] == '_')
 				{
-					// predefined attributes
+					
 					Query::DefinedAttributes type;
 					if (attrName == "_ID")
 						type = Query::DA_ID;
@@ -246,8 +246,7 @@ std::string QueryLoader::generateEventAttribute(const Query & _query, uint32_t _
 {
 	if (_eventAttrIdx > Query::DA_LAST_ATTRIBUTE)
 	{
-		// predefined defined attributes
-
+		
 		const auto& e = _query.events[_eventIdx];
 		switch (_eventAttrIdx)
 		{
@@ -267,8 +266,7 @@ std::string QueryLoader::generateEventAttribute(const Query & _query, uint32_t _
 	}
 	else if (_eventAttrIdx > Query::DA_LAST_ATTRIBUTE - _query.aggregation.size())
 	{
-		// aggregation function
-
+		
 		const auto& a = _query.aggregation[Query::DA_LAST_ATTRIBUTE - _eventAttrIdx];
 		return a.function + '(' + generateEventAttribute(_query, a.source.first, a.source.second) + ')';
 	}
@@ -475,7 +473,6 @@ void QueryLoader::parseQueryReturn(Query& _q)
 	skip(')');
 }
 
-
 const Query* QueryLoader::query(const char* _name) const
 {
 	for (auto& it : m_Queries)
@@ -557,13 +554,10 @@ void Query::fillAttrMap(size_t _reservedSlots)
 {
 	attrMap.clear();
 
-	// timestamp
 	attrMap.push_back(pair<uint32_t, uint32_t>(0, 0));
 
-	// add reserved slots
 	attrMap.resize(_reservedSlots + 1);
 
-	// attributes used for kleene sorting
 	for (uint32_t i = 0; i < events.size(); ++i)
 	{
 		pair<uint32_t, uint32_t> item(i, Query::DA_OFFSET);
@@ -571,21 +565,18 @@ void Query::fillAttrMap(size_t _reservedSlots)
 			attrMap.push_back(item);
 	}
 
-	// aggregationn source attributes
 	for (const auto& it : aggregation)
 	{
 		if (find(attrMap.begin(), attrMap.end(), it.source) == attrMap.end())
 			attrMap.push_back(it.source);
 	}
 
-	// return attributes
 	for (const auto& it : returnAttr)
 	{
 		if (find(attrMap.begin(), attrMap.end(), it) == attrMap.end())
 			attrMap.push_back(it);
 	}
 
-	// match attributes
 	for (const auto& it : where)
 	{
 		pair<uint32_t, uint32_t> item(it.event1, it.attr1);
@@ -598,20 +589,19 @@ void Query::fillAttrMap(size_t _reservedSlots)
 
 bool QueryLoader::setupPatternMatcher(const Query* _query, PatternMatcher& _matcher, const Callbacks& _functions) const
 {
-	// find event attributes to store in run
+	
 	const uint32_t numEvents = (uint32_t)_query->events.size();
-	//_matcher.addState(numEvents * 2 + 1, 0, PatternMatcher::ST_REJECT); // create last timeout event
-	_matcher.addState(numEvents + 1, 0, PatternMatcher::ST_REJECT); // create last timeout event
+	
+	_matcher.addState(numEvents + 1, 0, PatternMatcher::ST_REJECT); 
 
 	uint32_t lastEvent = 0;
 	for (uint32_t i = 0; i < numEvents; ++i)
 		if (!_query->events[i].stopEvent)
 			lastEvent = i;
 
-    // add states
 	for (uint32_t i = 0; i < numEvents; ++i)
 	{
-		// create state
+		
 		PatternMatcher::StateType type;
 		uint32_t numSlots = 0;
 
@@ -648,9 +638,6 @@ bool QueryLoader::setupPatternMatcher(const Query* _query, PatternMatcher& _matc
 
     _matcher.setStates2States();
 
-
-
-	// add sequential transitions
 	uint32_t srcState = 0;
 	for (uint32_t i = 0; i < numEvents; ++i)
 	{
@@ -687,10 +674,7 @@ bool QueryLoader::setupPatternMatcher(const Query* _query, PatternMatcher& _matc
 	}
 
     _matcher.setStates2Transitions();
-    //for(auto&& it : _matcher.m_Transitions)
-    //    cout << "in setupPatternMatcher, trasition.states == " << it.states << endl;
-
-	// setup aggregation functions
+    
 	for (size_t i = 0; i < _query->aggregation.size(); ++i)
 	{
 		const Query::Aggregation& a = _query->aggregation[i];
@@ -704,9 +688,6 @@ bool QueryLoader::setupPatternMatcher(const Query* _query, PatternMatcher& _matc
 	}
 
 	_matcher.setTimeout(_query->within);
-
-
-    
 
 	return true;
 }

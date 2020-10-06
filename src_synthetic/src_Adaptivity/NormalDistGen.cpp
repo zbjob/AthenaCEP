@@ -31,9 +31,9 @@ void NormalDistGen::run(double e11, double d11,
            {
                 this_thread::sleep_for(chrono::milliseconds(10));
            }
-           //cout << "stream generator " << eventCnt << endl;
+           
                 NormalEvent Event;
-                int dice_roll = distribution(generator);  // generates number in the range [1,20]
+                int dice_roll = distribution(generator);  
                 if(dice_roll == 1 || dice_roll > 3) {
                     Event.name = "A";
                     Event.v1 = (attr_t) N11(generator);
@@ -49,7 +49,6 @@ void NormalDistGen::run(double e11, double d11,
                     Event.ArrivalQTime = (uint64_t)duration_cast<microseconds>(high_resolution_clock::now() - g_BeginClock).count();
                     Event.ID = (uint64_t) IDgen(generator);
 
-
                 }
                 else if(dice_roll ==3){
                     Event.name = "C";
@@ -61,15 +60,9 @@ void NormalDistGen::run(double e11, double d11,
                 }
 
                 m_Buffer.push_back(Event);
-                //if (eventCnt < 2)
-                //{
-                //    //m_StopThread = true;
-                //    break;
-                //}
-            
-        } //for
+                
+        } 
         m_StopThread = true;
-
 
     });
   
@@ -77,7 +70,7 @@ void NormalDistGen::run(double e11, double d11,
 
 bool NormalDistGen::stop()
 {
-    //if(m_StopThread) 
+    
         m_GenThread.join();
 
     return m_StopThread;

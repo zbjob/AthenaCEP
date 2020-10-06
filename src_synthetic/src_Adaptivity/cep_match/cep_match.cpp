@@ -4,7 +4,6 @@
 #include "../_shared/PredicateMiner.h"
 #include "../_shared/MonitorThread.h"
 #include "../_shared/GlobalClock.h"
-//#include "Python.h" 
 
 #include "../freegetopt/getopt.h"
 #include "../NormalDistGenChangePattern.h"
@@ -23,7 +22,6 @@
 using namespace std;
 using namespace std::chrono;
 
-//static time_point<high_resolution_clock> g_BeginClock;
 time_point<high_resolution_clock> g_BeginClock;
 uint64_t NumFullMatch = 0;
 uint64_t NumHighLatency = 0;
@@ -64,7 +62,7 @@ inline uint64_t current_utime()
 class CepMatch
 {
 public:
-	//CepMatch(RingBuffer<NormalEvent>& Q) : m_Query(0), m_DefAttrId(0), m_DefAttrOffset(0), m_NextMinerUpdateTime(0), RawEventQueue(Q)
+	
 	CepMatch(queue<NormalEvent>& Q) : m_Query(0), m_DefAttrId(0), m_DefAttrOffset(0), m_NextMinerUpdateTime(0), RawEventQueue(Q)
 	{
         lastSheddingTime = 0;
@@ -83,7 +81,6 @@ public:
 	{
 
 	}
-
 
 	bool init(const char* _defFile, const char* _queryName, const char* _miningPrefix, bool _generateTimeoutEvents, bool _appendTimestamp)
 	{
@@ -106,7 +103,7 @@ public:
 		{
 			m_MiningPrefix = _miningPrefix;
 			m_Miner.reset(new PredicateMiner(m_Definition, *m_Query));
-			_generateTimeoutEvents = true; // important for mini
+			_generateTimeoutEvents = true; 
 
 			for (size_t i = 0; i < m_Query->events.size() - 1; ++i)
 			{
@@ -144,94 +141,38 @@ public:
 		return true;
 	}
 
-	//bool processEvent(NormalDistGen& StreamGen)
 	bool processEvent(uint64_t _eventCnt = 0)
 	{
-        //cout << "[processEvent] flag1" << endl;
+        
 		StreamEvent event;
         NormalEvent RawEvent;
-        //NormalEvent RawEvent1;
-        //cout << "[processEvent] flag2" << endl;
+        
         if(!RawEventQueue.empty())
         {
             RawEvent = RawEventQueue.front();
             RawEventQueue.pop();
 
-            //RawEvent1 = RawEventQueue.front();
-            //RawEventQueue.pop_front();
         }
         else{ 
             cout << "event stream queue is empty now!" << endl;
             return false;
         }
 
-        //cout << "[processEvent] flag3" << endl;
-		//if (!event.read())
-	    //		return false;
-        //cout << "StreamGen.isStop " <<  StreamGen.isStop() << endl;
-        //while(RawEventQueue.empty() && !StreamGen.isStop())
-        //while(RawEventQueue.empty())
-        //    this_thread::sleep_for(chrono::milliseconds(5));
-        //if(RawEventQueue.empty() && StreamGen.isStop())
-        //    return false;
-        //
-        
-
-       // bool eventB = false;
-       // if(RawEvent.name == "B" && RawEvent1.name == "Z")
-       // {
-       //     RawEventQueue.pop_front();
-       //     eventZ=true;
-       //     if(!eventB) 
-       //     {
-       //         cout << "detect of event B: " << RawEvent.ArrivalQTime << endl;
-       //         eventB = true;
-       //     }
-       // }
-        
-        // fine control for monitoring event B and PM/Input shedding
-        
-        
-
         event.attributes[0] = RawEvent.ArrivalQTime;
         event.attributes[1] = RawEvent.v1;
         event.attributes[2] = RawEvent.ID;
-        //event.attributes[2] = RawEvent.v2;
-        //event.attributes[3] = RawEvent.ID;
-        //event.attributes[3] = 1;
-
+        
         event.typeIndex = m_Definition.findEventDecl(RawEvent.name.c_str());
 
 		event.attributes[Query::DA_ZERO] = 0;
 		event.attributes[Query::DA_MAX] = numeric_limits<attr_t>::max();
 		event.attributes[Query::DA_CURRENT_TIME] = current_utime();
-		//event.attributes[Query::DA_CURRENT_TIME] = (uint64_t)duration_cast<microseconds>(high_resolution_clock::now() - g_BeginClock).count(); 
+		
 		event.attributes[Query::DA_OFFSET] = m_DefAttrOffset;
 		event.attributes[Query::DA_ID] = m_DefAttrId;
 
-        //random input shedding
-        //if(m_RandomInputSheddingFlag)
-        //{
-        //    int dice_roll = m_distribution(m_generator);
-        //    if(dice_roll == 1)
-        //    {
-        //       // cout << "shed input event" << endl;
-        //        ++loadCnt;
-        //        return true;
-        //    }
-        //}
-
-
-        //cout << "[processEvent] flag4" << endl;
 		const EventDecl* decl = m_Definition.eventDecl(event.typeIndex);
-        //cout << "[processEvent] flag5" << endl;
-
-		//assert(event.typeHash == StreamEvent::hash(decl->name));
-
         
-        //cout << "matchEvent in " << event.typeIndex << endl;
-        //cout << "[processEvent] flag6" << endl;
-
 		m_Matcher.event(event.typeIndex, (attr_t*)event.attributes);
 
         if(_eventCnt == 230000)
@@ -246,7 +187,6 @@ public:
             m_printFMpoint = _eventCnt + 100; 
         }
 
-
         if(_eventCnt > 230000 && _eventCnt ==  m_printFMpoint)
         {
             cout <<  RawEvent.ArrivalQTime  << "," << NumFullMatch - m_FM << endl;
@@ -254,12 +194,6 @@ public:
             m_FM = NumFullMatch;
         }
     
-        //cout << "matchEvent out " << endl;
-        //
-
-        // ========================================================================
-        // setting manully for State-based shedding for eventB
-        // and for random input-based shedding
         if(RawEvent.name == "B")
         {
             if(lastEventBTS == 0)
@@ -270,45 +204,6 @@ public:
                 PMSheddingTimer = RawEvent.ArrivalQTime + uint64_t(0.5*G_EventBOn*1000000);
         }
 
-//        if(PMSheddingTimer != 0 && RawEvent.ArrivalQTime >= PMSheddingTimer-5000)
-//        {
-//            //cout << "in cep_match processEvent perform shedding :" << RawEvent.ArrivalQTime <<  endl;
-//            if(m_PMSheddingSwitcher)
-//            {
-//                if(PMSheddingDice%2 == 1)
-//                    // shed partial match AB*
-//                    loadCnt += m_Matcher.PMloadShedding(2);
-//                else
-//                    // shed paretial match A**
-//                    loadCnt += m_Matcher.PMloadShedding(1);
-//                ++PMSheddingDice;
-//            }
-//
-//            if(m_InputSeddingSwitcher)
-//            {
-//                // perform input shedding
-//                int ShedEventCnt = G_InputShedCnt;
-//                while(ShedEventCnt)
-//                {
-//                   // while(RawEventQueue.empty())
-//                    //{
-//                         //this_thread::sleep_for(chrono::milliseconds(5));
-//                     //    cout << "waiting for producer" << endl;
-//                    //}
-//                    if (RawEventQueue.empty())
-//                        break;
-//                    RawEventQueue.pop();
-//                    ShedEventCnt--;
-//                    loadCnt++;
-//                }
-//
-//            }   
-//            
-//            PMSheddingTimer += uint64_t(0.5*(G_EventBOn+G_EventBOff)*1000000);
-//        }
-
-        //=========================================================================
-
 		if (m_Miner)
 		{
 			m_Miner->flushMatch();
@@ -318,8 +213,7 @@ public:
 
 		m_DefAttrId++;
 		m_DefAttrOffset += event.offset;
-		//assert(event.offset > 0);
-
+		
 		if (m_Miner && m_NextMinerUpdateTime <= event.attributes[Query::DA_CURRENT_TIME])
 		{
 			const uint64_t one_min = 60 * 1000 * 1000;
@@ -327,38 +221,8 @@ public:
 			update_miner();
 		}
 
-       //cout << "processEvent out " << endl;
-
 		return true;
 	}
-
-//    void printContribution()
-//    {
-//        for(auto&& it: m_Matcher.m_States)
-//        {
-//            std::cout << endl << "state contributions size == " << it.contributions.size() << endl;
-//            for(auto&& iter: it.contributions)
-//                cout << iter.first << "appears " << iter.second << "times" << endl;
-//
-//            std::cout << endl << "state consumptions size == " << it.consumptions.size() << endl;
-//            for(auto&& iter: it.consumptions)
-//                cout << iter.first << "appears " << iter.second << "times" << endl;
-//            std::cout << endl << "state scoreTable size == " << it.scoreTable.size() << endl;
-//
-//            if(!it.attr.empty())
-//            std::cout << "state size == " <<  it.attr.front().size() << endl;
-//
-//            
-//        }
-//        cout << "queue size " << RawEventQueue.size() << endl;
-//    }
-//
-//    void printStatesSize()
-//    {
-//        for(auto && it: m_Matcher.m_States)
-//            if(!it.attr.empty())
-//                cout << "state " << it.ID << " size: " << it.attr.front().size() << endl;
-//    }
 
     void PMSheddingOn() { m_PMSheddingSwitcher = true;}
     void PMSheddingOff() {m_PMSheddingSwitcher = false;}
@@ -400,7 +264,7 @@ public:
             if(RawEventQueue.front().name == "D") 
             {
                 processEvent();
-               // _eventCnt++;
+               
                 continue; 
             }
             int dice_roll = m_distribution(m_generator);
@@ -408,22 +272,21 @@ public:
             {
                 RawEventQueue.pop();
                 ++ShedCnt;
-                //_eventCnt++;
+                
             }
             else
             {
                processEvent(); 
-                 //_eventCnt++;
+                 
             }
         }
 
         return ShedCnt;
     }
 
-
    uint64_t  VLDB_03_InputShedding(int _quota, uint64_t & _eventCnt) 
    {
-//       cout << "[VLDB_03_InputShedding] in " << endl;
+
        int ToShedCnt = _quota;
        NormalEvent RawEvent;
        while(ToShedCnt > 0 && !RawEventQueue.empty())
@@ -465,22 +328,18 @@ public:
            }
        }
 
- //      cout << "[VLDB_03_InputShedding] succ leave shedding cnt : " << _quota -ToShedCnt << endl;
-
        return _quota - ToShedCnt;
    }
 
-
    uint64_t  VLDB_03_InputShedding(int ALowB, int AUpB, int BLowB, int BUpB, int CLowB, int CUpB, volatile uint64_t & _eventCnt) 
    {
-//       cout << "[VLDB_03_InputShedding] in " << endl;
+
        uint64_t ShedCnt = 0;
        NormalEvent RawEvent;
        while(!RawEventQueue.empty())
        {
            RawEvent = RawEventQueue.front(); 
            
-
            if(RawEvent.name == "A") 
            {
                if(RawEvent.v1 < ALowB || RawEvent.v1 > AUpB)
@@ -533,14 +392,12 @@ public:
            }
        }
 
- //      cout << "[VLDB_03_InputShedding] succ leave shedding cnt : " << _quota -ToShedCnt << endl;
-
        return ShedCnt;
    }
 
    uint64_t  VLDB_03_InputShedding(double _ratio, volatile uint64_t & _eventCnt) 
    {
-//       cout << "[VLDB_03_InputShedding] in " << endl;
+
        uint64_t ShedCnt = 0;
        int ratio = int(_ratio * 100);
        NormalEvent RawEvent;
@@ -557,7 +414,6 @@ public:
                    {
                        int dice_roll =  m_distribution(m_generator);
                        RawEvent = RawEventQueue.front(); 
-
 
                        if(RawEvent.name == "A" && RawEvent.v1 > AUpB) 
                        {
@@ -599,7 +455,6 @@ public:
                        int dice_roll =  m_distribution(m_generator);
                        RawEvent = RawEventQueue.front(); 
 
-
                        if(RawEvent.name == "A" && RawEvent.v1 > AUpB) 
                        {
                                RawEventQueue.pop();
@@ -638,7 +493,6 @@ public:
                    {
                        int dice_roll =  m_distribution(m_generator);
                        RawEvent = RawEventQueue.front(); 
-
 
                        if(RawEvent.name == "A" && RawEvent.v1 > AUpB) 
                        {
@@ -679,7 +533,6 @@ public:
                        int dice_roll =  m_distribution(m_generator);
                        RawEvent = RawEventQueue.front(); 
 
-
                        if(RawEvent.name == "A" && RawEvent.v1 > AUpB) 
                        {
                                RawEventQueue.pop();
@@ -719,7 +572,6 @@ public:
                        int dice_roll =  m_distribution(m_generator);
                        RawEvent = RawEventQueue.front(); 
 
-
                        if(RawEvent.name == "A" && RawEvent.v1 > AUpB) 
                        {
                                RawEventQueue.pop();
@@ -758,7 +610,6 @@ public:
                    {
                        int dice_roll =  m_distribution(m_generator);
                        RawEvent = RawEventQueue.front(); 
-
 
                        if(RawEvent.name == "A" && RawEvent.v1 > AUpB) 
                        {
@@ -800,7 +651,6 @@ public:
                        int dice_roll =  m_distribution(m_generator);
                        RawEvent = RawEventQueue.front(); 
 
-
                        if(RawEvent.name == "A" && RawEvent.v1 > AUpB) 
                        {
                                RawEventQueue.pop();
@@ -840,7 +690,6 @@ public:
                    {
                        int dice_roll =  m_distribution(m_generator);
                        RawEvent = RawEventQueue.front(); 
-
 
                        if(RawEvent.name == "A" && RawEvent.v1 > AUpB) 
                        {
@@ -882,7 +731,6 @@ public:
                        int dice_roll =  m_distribution(m_generator);
                        RawEvent = RawEventQueue.front(); 
 
-
                        if(RawEvent.name == "A" && RawEvent.v1 > AUpB) 
                        {
                                RawEventQueue.pop();
@@ -917,7 +765,6 @@ public:
                break;
        }
 
-      
    }
 
    uint64_t  SmPMS_min_combo_additional_InputShedding(double _ratio, volatile uint64_t & _eventCnt) 
@@ -940,7 +787,6 @@ public:
                    while(!RawEventQueue.empty())
                    {
                        RawEvent = RawEventQueue.front(); 
-
 
                        if(RawEvent.name == "A" && RawEvent.v1 > AUpB) 
                        {
@@ -972,7 +818,6 @@ public:
                    while(!RawEventQueue.empty())
                    {
                        RawEvent = RawEventQueue.front(); 
-
 
                        if(RawEvent.name == "A" && RawEvent.v1 > AUpB) 
                        {
@@ -1010,7 +855,6 @@ public:
                    while(!RawEventQueue.empty())
                    {
                        RawEvent = RawEventQueue.front(); 
-
 
                        if(RawEvent.name == "A" && RawEvent.v1 > AUpB) 
                        {
@@ -1050,7 +894,6 @@ public:
                    {
                        RawEvent = RawEventQueue.front(); 
 
-
                        if(RawEvent.name == "A" && RawEvent.v1 > AUpB) 
                        {
                                RawEventQueue.pop();
@@ -1085,7 +928,6 @@ public:
                    while(!RawEventQueue.empty())
                    {
                        RawEvent = RawEventQueue.front(); 
-
 
                        if(RawEvent.name == "A" && RawEvent.v1 !=1 && RawEvent.v1 != 9) 
                        {
@@ -1125,9 +967,7 @@ public:
    {
        uint64_t ShedCnt = 0;
        int upAB = *m_PM_Booking.rbegin();
-       //if(upAB > 10)
-       //    upAB =10;
-       //
+       
        uint64_t printFMpoint  = 230000 + 100;
        uint64_t FM = NumFullMatch;
        
@@ -1182,8 +1022,7 @@ public:
    {
        uint64_t ShedCnt = 0;
        int lowAB = *m_PM_Booking2.begin();
-       //if(upAB > 10)
-       //    upAB =10;
+       
        uint64_t printFMpoint  = _eventCnt + 100;
        uint64_t FM = NumFullMatch;
        NormalEvent RawEvent;
@@ -1226,7 +1065,6 @@ public:
 
    }
 
-
    uint64_t  SmPMS_max_combo_additional_InputShedding(double _ratio, volatile uint64_t & _eventCnt) 
    {
        uint64_t ShedCnt = 0;
@@ -1247,7 +1085,6 @@ public:
                    while(!RawEventQueue.empty())
                    {
                        RawEvent = RawEventQueue.front(); 
-
 
                        if(RawEvent.name == "A" && RawEvent.v1 > AUpB) 
                        {
@@ -1279,7 +1116,6 @@ public:
                    while(!RawEventQueue.empty())
                    {
                        RawEvent = RawEventQueue.front(); 
-
 
                        if(RawEvent.name == "A" && RawEvent.v1 > AUpB) 
                        {
@@ -1317,7 +1153,6 @@ public:
                    while(!RawEventQueue.empty())
                    {
                        RawEvent = RawEventQueue.front(); 
-
 
                        if(RawEvent.name == "A" && RawEvent.v1 > AUpB) 
                        {
@@ -1367,7 +1202,6 @@ public:
                    {
                        RawEvent = RawEventQueue.front(); 
 
-
                        if(RawEvent.name == "A" && RawEvent.v1 > AUpB) 
                        {
                                RawEventQueue.pop();
@@ -1416,7 +1250,6 @@ public:
                    {
                        RawEvent = RawEventQueue.front(); 
 
-
                        if(RawEvent.name == "A" && RawEvent.v1 > 4) 
                        {
                                RawEventQueue.pop();
@@ -1455,8 +1288,6 @@ public:
    {
        uint64_t ShedCnt = 0;
 
-
-
        const int dice_UP = ratio*100;
 
        NormalEvent RawEvent;
@@ -1466,8 +1297,6 @@ public:
 
             int dice_roll2 =  m_distribution(m_generator);
 
-           //if(dice_roll < dice_UP )
-           //{
                if(RawEvent.name == "A" && dice_roll2 <= dice_UP+2) 
                {
                    RawEventQueue.pop();
@@ -1491,18 +1320,11 @@ public:
                    processEvent();
                    _eventCnt++;
                }
-           //}
-           //else
-           //{
-           //    processEvent();
-           //    _eventCnt++;
-           //}
+           
        }
-
 
        return ShedCnt;
    }
-
 
    uint64_t ICDT_14_InputShedding(int _quota, uint64_t & _eventCnt)
    {
@@ -1540,7 +1362,7 @@ public:
 
    uint64_t cost_based_InputShedding(int _quota, uint64_t & _eventCnt)
    {
-      // cout << "[cost_based_InputShedding] " << endl;
+      
        int ToShedCnt = _quota;
        NormalEvent RawEvent;
        while(ToShedCnt> 0 && !RawEventQueue.empty())
@@ -1564,13 +1386,9 @@ public:
            }
        }
 
-      // cout << "[cost_based_InputShedding] succ leave shedding cnt: " << _quota - ToShedCnt << endl;
        return _quota - ToShedCnt;
        
    }
-
-    
-
 
 	void update_miner()
 	{
@@ -1607,11 +1425,9 @@ public:
 		dst.storeFile(eqlFilename.c_str());
 	}
 
-//protected:
-
     bool readEventStreamFromFiles(string file, int PMABUpperBound, bool _override)
     {
-        //cout << "**********************!!!!!!!!!!!!!!!!!!in readEventStreamFromFiles" << endl;
+        
         ifstream ifs;
         ifs.open(file.c_str());
         if( !ifs.is_open())
@@ -1620,12 +1436,7 @@ public:
             return false;
         }
 
-
         string line;
-
-
-
-
 
         uniform_int_distribution<int> EventC_distribution(2,PMABUpperBound); 
         while(getline(ifs,line))
@@ -1633,7 +1444,6 @@ public:
             vector<string> dataEvent;
             stringstream lineStream(line);
             string cell;
-
 
             while(getline(lineStream,cell,','))
                 dataEvent.push_back(cell);
@@ -1652,7 +1462,7 @@ public:
             }
 
             RawEventQueue.push(RawEvent);
-            //cout << "added an event" << endl;
+            
         }
 
         return true;
@@ -1691,116 +1501,15 @@ public:
 		uint64_t* outattr_it = r.attributes;
 		for (auto it : m_OutEventAttrSrc)
 			*outattr_it++ = _attributes[it];
-       // cout << "0" << "," << flush;
-	   // for (auto it : m_OutEventAttrSrc)
-	   // 	cout << _attributes[it] << "," << flush;
-       // cout << endl;
        
-
-
-        //cout << "latency  in write event" << _attributes[Query::DA_FULL_MATCH_TIME] << "--" <<   _attributes[Query::DA_CURRENT_TIME] << "--" << r.attributes[Query::DA_CURRENT_TIME] << endl; 
-
-		//r.write();
-
-        //monitoring load shedding: if latency exceeds threshold for 2 times, call load shedding
-        //monitor every 50,000 us, taking average latency in this time span
-        //
-        //===========================================
-        //monitor latency per full match 
-        //
         uint64_t la = _attributes[Query::DA_FULL_MATCH_TIME] - _attributes[Query::DA_CURRENT_TIME]; 
         m_RealTimeLatency = la;
         m_Latency_booking[la]++;
-        //m_Latency_booking_Q.push(la);
-        //
-        //cout << la << endl;
-        //cout << "[write_event] latency " << la << endl;
+        
         ACCLantency += la;
 
-       // if(la > 0.9*LATENCY)
-       // {
-       //     //cout << "[write_event] warning : lantancy " << la << " > " << 0.9*LATENCY << endl;
             if(la > LATENCY)
                 ++NumHighLatency;
-
-       //     if( _attributes[Query::DA_FULL_MATCH_TIME] - lastSheddingTime > 10000)
-       //     {
-       //         cout << "[write_event] shedding time span " << _attributes[Query::DA_FULL_MATCH_TIME] - lastSheddingTime << endl; 
-       //         double LOF = (la-0.9*LATENCY)/(LATENCY);
-       //         cout << "[write_event] LOF" << LOF << endl;
-       //         if(LOF > 1)
-       //             LOF=0.9;
-       //         m_SheddingCnt += m_Matcher.approximate_BKP_PMshedding(LOF);
-       //         lastSheddingTime = _attributes[Query::DA_FULL_MATCH_TIME];
-       //         cout << "[write_event] finished " << endl;
-       //     }
-          //}
-        //Trigger of load shedding
-        // Here to compute how much and which partial matches or event to shed.
-        //=============================================
-
-        //=================================================================================================
-        // monitor latency every 50ms.
-        //
-        //if(_attributes[Query::DA_FULL_MATCH_TIME] / 50000 == time / 50000)
-        //{
-        //    acctime += _attributes[Query::DA_FULL_MATCH_TIME];
-        //    latency += la;
-        //    Rtime = time/50000; //number R 50,000us
-        //    cntFullMatch++;
-        //}
-        //else
-        //{
-        //    //print out latency
-        //    //cout << Rtime << "," << long(latency/cntFullMatch) << endl;
-
-        //    //printStatesSize();
-        //    //printContribution();
-
-        //    //==== for state-based shedding monitoring
-        //    //======================================================
-        //    if(latency/cntFullMatch > LATENCY) 
-        //    {
-        //        ++NumHighLatency;
-
-        //        //for random input shedding =====
-        //    //    if(m_InputSeddingSwitcher)
-        //    //        m_RandomInputSheddingFlag = true;
-        //    //    else
-        //    //        m_RandomInputSheddingFlag = false;
-        //    //
-        //    //    if(m_PMSheddingSwitcher && _attributes[Query::DA_FULL_MATCH_TIME] - lastSheddingTime > 3000000)
-        //    //    {
-
-        //    //        //m_Matcher.randomLoadShedding();
-        //    //        //time_point<high_resolution_clock> t0 = high_resolution_clock::now();
-        //    //        //m_Matcher.computeScores4LoadShedding();
-        //    //        //===for state-based load shedding
-        //    //        if(PatternMatcher::MonitoringLoad() == true){
-        //    //           m_Matcher.computeScores4LoadShedding();
-        //    //           m_Matcher.loadShedding();
-        //    //           ++loadCnt;
-        //    //        }
-
-        //    //        //time_point<high_resolution_clock> t1 = high_resolution_clock::now();
-        //    //        //cout << "load shedding time " << duration_cast<microseconds>(t1 - t0).count() << endl;
-        //    //        lastSheddingTime = _attributes[Query::DA_FULL_MATCH_TIME];
-        //    //    }
-        //    }
-        //    //======================================================
-
-        //        cntFullMatch = 1;
-        //        time = _attributes[Query::DA_FULL_MATCH_TIME];
-        //        latency = la;
-        //        acctime = time;
-        //        Rtime = time/50000;
-        //    
-        //}
-        //==========================================================================================================
-        
-
-
-
 
 		if (m_Miner)
 		{
@@ -1826,7 +1535,6 @@ public:
 		}
 	}
 
-//private:
 	QueryLoader			m_Definition;
 	const Query*		m_Query;
 
@@ -1834,9 +1542,6 @@ public:
 	string				m_MiningPrefix;
 	PatternMatcher		m_Matcher;
 	vector<uint32_t>	m_OutEventAttrSrc;
-
-    //default_random_engine m_generator; 
-    //uniform_int_distribution<int> m_distribution(1,5);
 
     bool                m_RandomInputSheddingFlag;
     bool                m_InputSeddingSwitcher;
@@ -1865,8 +1570,6 @@ public:
     uint64_t            cntFullMatch;
     uint64_t            m_RealTimeLatency = 0;
     
-
-    //RingBuffer<NormalEvent>&  RawEventQueue;
     queue<NormalEvent>&  RawEventQueue;
     
     map<int,uint64_t>  m_Latency_booking;
@@ -1880,7 +1583,6 @@ public:
     uint64_t m_FM = 0;
 };
 
-
 int max(int a, int b) { return (a > b) ? a : b; }
 
 void knapSackSolver(int W, int wt[], int val[], int name[], int n, set<int> &keepingPMSet)
@@ -1891,7 +1593,6 @@ void knapSackSolver(int W, int wt[], int val[], int name[], int n, set<int> &kee
         for(int j=W; j<=W; ++j)
             K[i][j] = 6000;
 
-    // Build table K[][] in bottom up manner 
     for (i = 0; i <= n; i++) {
         for (w = 0; w <= W; w++) {
             if (i == 0 || w == 0)
@@ -1904,35 +1605,23 @@ void knapSackSolver(int W, int wt[], int val[], int name[], int n, set<int> &kee
         }
     }
 
-    // stores the result of Knapsack 
     int res = K[n][W];
-
 
     w = W;
     for (i = n; i > 0 && res > 0; i--) {
 
-        // either the result comes from the top 
-        // (K[i-1][w]) or from (val[i-1] + K[i-1] 
-        // [w-wt[i-1]]) as in Knapsack table. If 
-        // it comes from the latter one/ it means 
-        // the item is included.  
         if (res == K[i - 1][w])
             continue;        
         else { 
 
-            // This item is included. 
-            //printf("%d ", wt[i - 1]); 
             keepingPMSet.insert(name[i-1]);
 
-            // Since this weight is included its 
-            // value is deducted 
             res = res - val[i - 1]; 
             w = w - wt[i - 1]; 
         }
     } 
 }                                     
 
-//bool PatternMatcher::loadMonitoringFlag = false;
 int main(int _argc, char* _argv[])
 {
 	init_utime();
@@ -1952,7 +1641,6 @@ int main(int _argc, char* _argv[])
     bool Flag_RandomPMShedding = false;
     bool GeneratePMsFlag = false;
 
-
     bool Flag_selectivityPMShedding = false;
 
     bool Flag_inputShedVLDB_03 = false;
@@ -1961,8 +1649,6 @@ int main(int _argc, char* _argv[])
     bool inputShed_cost_based = false;
 
     bool DropIrrelevantOnly = false;
-
-
 
     for(int i=0; i<11; ++i)
     {
@@ -1975,36 +1661,10 @@ int main(int _argc, char* _argv[])
     for(int i=0; i<21; ++i)
         C[i] = 0;
 
-
-
-    //CPyInstance PInstance;
-
-
     string partialMatchOutPutFilePrefix = "/home/bo/CEP_load_shedding/src_PM_Distribution_test/NormalEventStreamGen/SampleData/PM";
     string suffix = "none";
-    //string streamFile = "/home/bo/CEP_load_shedding/src_PM_Distribution_test/NormalEventStreamGen/StreamLog1.csv";
-    //string streamFile = "/home/bo/CEP_load_shedding/src_PM_Distribution_test/NormalEventStreamGen/Uniform_StreamLog_c_2-10_500K.csv";
+    
     string streamFile = "/home/zhaobo/CEP_load_shedding/src_PM_Distribution_test/NormalEventStreamGen/Uniform_StreamLog_change_500K.csv";
-    //string streamFile = "/home/bo/CEP_load_shedding/src_PM_Distribution_test/NormalEventStreamGen/Uniform_StreamLog_c_2-6_500K.csv";
-    //string streamFile = "/home/zhaobo/CEP_load_shedding/src_PM_Distribution_test/NormalEventStreamGen/Uniform_StreamLog_c_10-11_500K.csv";
-
-    //string streamFile = "/home/bo/CEP_load_shedding/src_PM_Distribution_test/NormalEventStreamGen/StreamLog_500K.csv";
-    //string streamFile = "../../NormalEventStreamGen/StreamLog.csv";
-    //string streamFile = "/home/bo/CEP_load_shedding/src_PM_Distribution_test/NormalEventStreamGen/StreamLog_500K.csv";
-    //
-    //string path = "/home/bo/CEP_load_shedding/src_PM_Distribution_test/python-clustering-classification";
-
-    //cout << "[main] flag1 " << endl;
-
-    //string chdir_cmd = string("sys.path.append(\"") + path + "\")";
-    //const char* cstr_cmd = chdir_cmd.c_str();
-    //cout << "[main] flag2 " << endl;
-
-    //PyRun_SimpleString("import sys");
-
-    //cout << "[main] flag3 " << endl;
-    //PyRun_SimpleString(cstr_cmd);
-
     
     string _pFile = string("DS4PM");
     string _pFunc = string("DS1");
@@ -2052,7 +1712,7 @@ int main(int _argc, char* _argv[])
             InputShedding = true;
             break;
         case 'P':
-            //PMShedding = true;
+            
             Flag_ClusteringPMShedding = true;
 			break;
         case 'R':
@@ -2097,67 +1757,24 @@ int main(int _argc, char* _argv[])
     int CLowerBound = sheddingRatio*10;
     cout << CLowerBound << endl;
 
-    //char p;
-    //cin >> p;
-
-
     queue<NormalEvent> EventQueue;
-
-    //NormalDistGen      StreamGenerator(EventQueue, 1000, 20000); 
-    //StreamGenerator.run(45,5,//Distibution for A.v1
-    //                    50,3,  // ... A.v2
-    //                    40,5,  // ... B.v1
-    //                    55,3,   // ... B.v2
-    //                    50,3,  // ... C.v1
-    //                    40,3);  // ... C.v2
-
-    //StreamGenerator.stop();
-
-
 
 	CepMatch prog(EventQueue);
 	if (!prog.init(deffile, queryName, miningPrefix, captureTimeouts, appendTimestamp))
 		return 1;
 
-    //prog.readEventStreamFromFiles(streamFile, PMABUpperBound);
-    prog.readEventStreamFromFiles(streamFile, PMABUpperBound, false); // don't change the distribution of event C
+    prog.readEventStreamFromFiles(streamFile, PMABUpperBound, false); 
 
     prog.m_Matcher.setTTL(TTL);
-    //string path = "/home/bo/CEP_load_shedding/src_PM_Distribution_test/python-clustering-classification";
-    //string path = "../../python-clustering-classification";
-
-    //cout << "[main] flag1 " << endl;
-
-    //string chdir_cmd = string("sys.path.append(\"") + path + "\")";
-    //const char* cstr_cmd = chdir_cmd.c_str();
-    //cout << "[main] flag2 " << endl;
-
-   // PyRun_SimpleString("import sys");
-
-    //cout << "[main] flag3 " << endl;
-   // PyRun_SimpleString(cstr_cmd);
     
-    //cout << "[main] flag4 " << endl;
-    
-
-    //prog.m_Matcher.setPythonLearning(_pFile, _pFunc);
-    //cout << "[main] flag5 " << endl;
     prog.m_Matcher.setTimeSliceSpan(prog.m_Query->within);
-
 
     prog.m_Matcher.m_States[0].stateBufferCount = 0;
     prog.m_Matcher.m_States[0].setTimesliceClusterAttributeCount(1,1,1);
     prog.m_Matcher.m_States[0].count[0][0] = 1;
-    //set key attribute indexs
-    //prog.m_Matcher.m_States[1].setKeyAttrIdx(1);
-    //prog.m_Matcher.m_States[2].setKeyAttrIdx(4);
-
-    //prog.m_Matcher.m_States[1].setTimesliceClusterAttributeCount(1,4,1);
-    //prog.m_Matcher.m_States[2].setTimesliceClusterAttributeCount(1,4,1);
-
+    
     prog.m_Matcher.m_States[1].setIndexAttribute(1);
     prog.m_Matcher.m_States[2].setIndexAttribute(4);
-
 
     prog.m_Matcher.m_States[1].addClusterAttrIdx(1);
     prog.m_Matcher.m_States[2].addClusterAttrIdx(1);
@@ -2167,11 +1784,6 @@ int main(int _argc, char* _argv[])
     prog.m_Matcher.m_States[2].addKeyAttrIdx(1);
     prog.m_Matcher.m_States[2].addKeyAttrIdx(4);
 
-
-    //prog.m_Definition.print();
-    //prog.m_Matcher.print();
-    //
-    //
     prog.m_Matcher.addClusterTag(1,0,0,234,104607);
     prog.m_Matcher.addClusterTag(1,0,1,3.3333333333,4046.625);
     prog.m_Matcher.addClusterTag(1,0,2,432,157341.333333);
@@ -2190,32 +1802,19 @@ int main(int _argc, char* _argv[])
     PatternMatcher::Condition  _condition;
     _condition.param[0] = 1;
     _condition.param[1] = 4;
-    _condition.param[2] = 1;  // c.v attribute index.
+    _condition.param[2] = 1;  
     _condition.constant = 0;
     _condition.op = PatternMatcher::OP_ADD;
     _condition.op2 = PatternMatcher::OP_EQUAL;
 
-
-    //extract the last transition instance, which should be a.v+b.v=c.v. Then update the check condition and execution handler 
     PatternMatcher::Transition& t = prog.m_Matcher.m_Transitions.back();
      t.conditions.push_back(_condition);
      t.updateHandler(prog.m_Matcher.m_States[t.from], prog.m_Matcher.m_States[t.to]);
-
-
 
     prog.m_Matcher.m_States[2].timePointIdx = 3;
     prog.m_Matcher.m_States[1].timePointIdx = 0;
     prog.m_Matcher.m_States[3].timePointIdx = 5;
 
-//    prog.m_Definition.print();
-//    prog.m_Matcher.print();
-
-    //char _ch;
-    //cin >> _ch;
-
-
-    
-    //cout << "[main] flag6 " << endl;
     if(InputShedding)
     {
         cout << "Inpute shedding on " << endl;
@@ -2223,8 +1822,7 @@ int main(int _argc, char* _argv[])
     }
     else
         prog.InputSheddingOff();
-    //cout << "[main] flag7 " << endl;
-
+    
     if(PMShedding)
     {
         cout << "PM Shedding on " << endl;
@@ -2238,36 +1836,20 @@ int main(int _argc, char* _argv[])
     }
 
 	volatile uint64_t eventCounter = 0;
-	//uint64_t eventCounter = 0;
-
+	
     set<int> PMBook;
     bool C_keep_book[21];
     for(int i=0; i<21; ++i)
         C_keep_book[21] = false;
 
-
-
-
 	MonitorThread monitor;
-	monitor.addValue(&current_utime);        //set monitoring time. every 1 second
-	monitor.addValue(&eventCounter, true);   //write #event every second
-//	monitor.addValue(&NumFullMatch, false);  //write #FullMatch till now
-	//monitor.addValue(&NumHighLatency, true);//write #HighLatency till now
-   // monitor.addValue(&NumFullMatch, true);   //write #Fullmatch every second
-   // monitor.addValue(&ACCLantency,true);     //write #AccLantecy every second
-   // monitor.addValue(&NumPartialMatch,true);     //write #PM every second
-//    monitor.addValue(&NumPartialMatch,false);     //write accumulated #PM till now 
-                                             //the AVG Latency every second =  #AccLantecy every second / #Fullmatch every second
-                                             //
+	monitor.addValue(&current_utime);        
+	monitor.addValue(&eventCounter, true);   
 
-    //MonitorThread monitorLatency;
-
-    
 	if (monitorFile)
     {
 		monitor.start(monitorFile);
-        //string _file = "_latency.csv";
-        //monitorLatency.start_monitoring_latency(_file, prog.m_Latency_booking_Q);
+        
     }
 
     if(MonitoringCons_Contr_Flag)
@@ -2275,26 +1857,17 @@ int main(int _argc, char* _argv[])
     else
         PatternMatcher::setMonitoringLoadOff();
 
-
     /************** PM shedding *********************/
-    //prog.m_Matcher.clustering_classification_PM_shedding_4_typeC(2,2,10);
-    //prog.m_Matcher.clustering_classification_PM_shedding_4_typeC(1,1,10);
-
+    
     if(Flag_ClusteringPMShedding)
     {
-        //prog.m_Matcher.clustering_classification_PM_shedding_semantic(sheddingRatio);
-        //PMSheddingCombo :
-        // ---- 1 min
-        // -----2 max
+        
         prog.m_Matcher.clustering_classification_PM_shedding_semantic_setPMSheddingCombo(2);
 
-        //********** building up knapsack to pick up shedding candidate
-
-        //setting up the 1st knapsack
         cout << "!!!!!!!!!!!!!!!!!!!!!!!!" << endl;
-        int val[19];  // PM C+  
-        int wt[19];   // PM C- 
-        int name[19]; // PM lookup table
+        int val[19];  
+        int wt[19];   
+        int name[19]; 
         
         for(int i=0; i<19; ++i)
             name[i] = i+2;
@@ -2305,7 +1878,7 @@ int main(int _argc, char* _argv[])
             if(pc <= PMABUpperBound)
                 val[i] = pc - 1;
             if(pc > PMABUpperBound)
-                val[i] = 1;   // strictly, the value shoud be 0, but we only need a partial order. There fore, 1 is also fine.
+                val[i] = 1;   
 
             if(pc <= 11)
                 wt[i] = pc -1;
@@ -2319,16 +1892,13 @@ int main(int _argc, char* _argv[])
 
         knapSackSolver(RatioToKeep, wt, val, name, n, prog.m_PM_Booking);
 
-
-        //setting up the 2nd knapsack
-
         for(int i=0; i<19; ++i)
         {
             int pc = i+2;
             if(pc <= 11)
                 val[i] = 1;
             if(pc > 11)
-                val[i] = 10-(pc-11);   // strictly, the value shoud be 0, but we only need a partial order. There fore, 1 is also fine.
+                val[i] = 10-(pc-11);   
 
             if(pc <= 11)
                 wt[i] = pc -1;
@@ -2338,8 +1908,6 @@ int main(int _argc, char* _argv[])
 
         n = sizeof(val) / sizeof(val[0]); 
         knapSackSolver(RatioToKeep, wt, val, name, n, prog.m_PM_Booking2);
-
-
 
         for(auto &a : prog.m_type_C_Booking)
             a = false;
@@ -2354,12 +1922,8 @@ int main(int _argc, char* _argv[])
         }
         cout << endl;
 
-
-        
-
         for(auto &a : prog.m_type_C_Booking2)
             a = false;
-
 
         cout << "m_PM_Booking2 " << endl;
         for(auto PMKey : prog.m_PM_Booking2)
@@ -2370,10 +1934,8 @@ int main(int _argc, char* _argv[])
         }
         cout << endl;
 
-
         cout << "Keeping ratio " << RatioToKeep << endl;
 
-        
         for(int i=0; i<21; ++i)
             cout << i << "---" << prog.m_type_C_Booking[i] << "   " << flush;
        cout << endl;
@@ -2407,179 +1969,45 @@ int main(int _argc, char* _argv[])
     cout << "monitoring " << PatternMatcher::MonitoringLoad() << endl;
     cout << "[main] flag8 " << endl;
 
-
     uint64_t sheddingCnt = 0;
     uint64_t inputSheddingCnt = 0;
 
-    //int loadCnt = 0;
     uint64_t eventCntFlag = eventCounter + 20000;
     time_point<high_resolution_clock> begin_time_point = high_resolution_clock::now();
 
-
-     
 	while(prog.processEvent(eventCounter))
     {
     uint64_t eventInputSheddingProcessCnt = 0;
-    //    cout << "queue size " <<  EventQueue.size() << endl;
+    
 		eventCounter++;
-        //if(eventCounter%1000 == 0)
-        //    prog.m_Matcher.print();
-
-
-        //***********PM additinal input shedding***********
-       // prog.SmPMS_max_combo_additional_InputShedding(sheddingRatio, eventCounter);
+        
        if(Flag_ClusteringPMShedding)
            inputSheddingCnt = prog.SmPMS_additional_InputShedding(sheddingRatio, eventCounter);
 
        if(DropIrrelevantOnly)
            inputSheddingCnt = prog.SmPMS_additional_InputShedding(sheddingRatio, eventCounter);
 
-        
-
         /************** input shedding *********************/
         if(Flag_inputShedVLDB_03)
         {
-            //inputSheddingCnt = prog.VLDB_03_InputShedding(1,ABUpperBound,1,ABUpperBound,CLowerBound, 10, eventCounter);
+            
             inputSheddingCnt = prog.VLDB_03_InputShedding(sheddingRatio, eventCounter);
         }
-        //inputSheddingCnt = prog.VLDB_03_InputShedding(1,2,1,2,eventCounter);
-        //inputSheddingCnt = prog.VLDB_03_InputShedding(1,3,1,3,eventCounter);
-        //inputSheddingCnt = prog.VLDB_03_InputShedding(1,4,1,4,eventCounter);
-        //inputSheddingCnt = prog.VLDB_03_InputShedding(1,5,1,5,eventCounter);
-        //inputSheddingCnt = prog.VLDB_03_InputShedding(1,6,1,6,eventCounter);
-        //inputSheddingCnt = prog.VLDB_03_InputShedding(1,7,1,7,eventCounter);
-        //inputSheddingCnt = prog.VLDB_03_InputShedding(1,8,1,8,eventCounter);
-        //inputSheddingCnt = prog.VLDB_03_InputShedding(1,9,1,9,eventCounter);
-        //inputSheddingCnt = prog.VLDB_03_InputShedding(1,10,1,10,eventCounter);
-        //inputSheddingCnt = prog.RandomInputShedding(0.75,eventCounter);
+        
         if(Flag_inputShedRandom)
             inputSheddingCnt = prog.RandomInputShedding(sheddingRatio,eventCounter);
         if(Flag_inputShedICDT_14)
             inputSheddingCnt = prog.selectivity_InputShedding(sheddingRatio,eventCounter);
         /************************************************/
 
-//        if(false && eventCounter > eventCntFlag)
-//        {
-//            eventCntFlag = eventCounter + 20000;
-//            //if(bool PMshedding = false)
-//            if(Flag_ClusteringPMShedding)
-//            {
-//                //for(auto && B : prog.m_Matcher.m_States[1].buffers[0][1])
-//                //    B.clear();
-//                //prog.m_Matcher.m_States[1].count[0][1]=0;
-//                //prog.m_Matcher.m_States[1].firstMatchId[0][1]=0;
-//
-//            //    sheddingCnt += prog.m_Matcher.clustering_classification_PM_shedding(1,0,1);
-//                //cout << "drop timeslice 0, cluster 1 in state 1" << endl; 
-//
-//                //for(auto && B : prog.m_Matcher.m_States[2].buffers[0][1])
-//                //    B.clear();
-//                //prog.m_Matcher.m_States[2].count[0][1]=0;
-//                //prog.m_Matcher.m_States[2].firstMatchId[0][1]=0;
-//
-//            //    sheddingCnt += prog.m_Matcher.clustering_classification_PM_shedding(2,0,1);
-//
-//                //cout << "drop timeslice 0, cluster 1 in state 2" << endl; 
-//
-//                //for(auto && B : prog.m_Matcher.m_States[1].buffers[0][3])
-//                //    B.clear();
-//                //prog.m_Matcher.m_States[1].count[0][3]=0;
-//                //prog.m_Matcher.m_States[1].firstMatchId[0][3]=0;
-//
-//            //    sheddingCnt += prog.m_Matcher.clustering_classification_PM_shedding(1,0,3);
-//                //cout << "drop timeslice 0, cluster 3 in state 1" << endl; 
-//
-//                //for(auto && B : prog.m_Matcher.m_States[2].buffers[0][3])
-//                //    B.clear();
-//                //prog.m_Matcher.m_States[2].count[0][3]=0;
-//                //prog.m_Matcher.m_States[2].firstMatchId[0][3]=0;
-//
-//                sheddingCnt += prog.m_Matcher.clustering_classification_PM_shedding(2,0,1);
-//                //sheddingCnt += prog.m_Matcher.clustering_classification_PM_shedding(2,0,2);
-//                //sheddingCnt += prog.m_Matcher.clustering_classification_PM_shedding(2,0,3);
-//                //cout << "drop timeslice 0, cluster 3 in state 2" << endl; 
-//
-//                cout << "PMdropping , real time latency : " << prog.m_RealTimeLatency << endl;
-//            }
-//
-//            //if(bool PMRandomShedding = true)
-//            if(Flag_RandomPMShedding)
-//            {
-//                cout << "random shedding called " << endl;
-//                sheddingCnt += prog.m_Matcher.clustering_classification_PM_random_shedding(2810945/5);
-//            }
-//
-//
-//            if(Flag_selectivityPMShedding)
-//            {
-//                //cout << "[PMshedding] VLDB16 " << endl; 
-//                sheddingCnt += prog.m_Matcher.loadShedding_VLDB16(2810945/2, 1, 2);
-//            }
-//
-//            if(Flag_inputShedVLDB_03)
-//            {
-//                inputSheddingCnt += prog.VLDB_03_InputShedding(2000,eventInputSheddingProcessCnt);
-//            }
-//        
-//            if(Flag_inputShedICDT_14)
-//            {
-//                inputSheddingCnt += prog.ICDT_14_InputShedding(2000,eventInputSheddingProcessCnt);
-//            }
-//
-//            if(Flag_inputShedRandom)
-//            {
-//                inputSheddingCnt += prog.RandomInputShedding(10000,eventInputSheddingProcessCnt);
-//            }
-//
-//            if(inputShed_cost_based)
-//            {
-//                inputSheddingCnt += prog.cost_based_InputShedding(2000,eventInputSheddingProcessCnt);
-//            }
-//            eventCounter += eventInputSheddingProcessCnt;
-//
-//
-//        }
             eventCounter += eventInputSheddingProcessCnt;
 
-        //if(PMShedding && PatternMatcher::MonitoringLoad() == true)
-        //{
-        //    if(eventCounter  == 2000000)
-        //    //if(NumFullMatch == 800000 )
-        //    {
-        //        PatternMatcher::setMonitoringLoadOff();
-        //        cout << "call loadshedding" << endl;
-        //        
-        //        //time_point<high_resolution_clock> t0 = high_resolution_clock::now();
-        //        prog.m_Matcher.computeScores4LoadShedding();
-        //        //prog.m_Matcher.loadShedding();
-        //        //time_point<high_resolution_clock> t1 = high_resolution_clock::now();
-        //        //cout << "compute4score time load shedding time " << duration_cast<microseconds>(t1 - t0).count() << endl;
-        //    }
-
-        //    //if(eventCounter > 100000 && eventCounter % 100000 == 1)
-        //    //{
-
-        //    //    time_point<high_resolution_clock> t0 = high_resolution_clock::now();
-        //    //    prog.m_Matcher.loadShedding();
-        //    //    time_point<high_resolution_clock> t1 = high_resolution_clock::now();
-        //    //    cout << "laod shedding time " << duration_cast<microseconds>(t1 - t0).count() << endl;
-        //    //    ++loadCnt;
-        //    //}
-        //}
     }
     time_point<high_resolution_clock> end_time_point = high_resolution_clock::now();
 
-    //StreamGenerator.stop();
-
-
-        
-
-
-	//prog.update_miner();
-
     string _file = string("latency_")+suffix+".csv";
     prog.dumpLatencyBooking(_file);
-   // prog.printContribution();
+   
     std::cout << "perform " << prog.loadCnt << "loadshedding" << endl;
     std::cout << "eventCn " << eventCounter << endl;
     std::cout << "#full Match " << NumFullMatch << endl;
@@ -2593,27 +2021,6 @@ int main(int _argc, char* _argv[])
     cout << "#approximate_BKP_PMshedding " << prog.m_SheddingCnt << endl;
     cout << "inputShedding number " << inputSheddingCnt << endl;
     cout << "exe time in ms: " << duration_cast<milliseconds>(end_time_point - begin_time_point).count() << endl;
-    //cout << "acc " << (long double) NumFullMatch / (long double) (7800635);
-
-//    cout << "contributions A: " << endl;
-//    for(int i = 1; i<=10; ++i)
-//        cout << "-------" << i << " === " << Ac[i] << endl; 
-//
-//    cout << "consumptions A: " << endl;
-//    for(int i = 1; i<=10; ++i)
-//        cout << "-------" << i << " === " << A[i] << endl; 
-//
-//    cout << "contributions B: " << endl;
-//    for(int i = 1; i<=10; ++i)
-//        cout << "-------" << i << " === " << Bc[i] << endl; 
-//
-//    cout << "consumptions B: " << endl;
-//    for(int i = 1; i<=10; ++i)
-//        cout << "-------" << i << " === " << B[i] << endl; 
-//
-//    cout << "contributions C: " << endl;
-//    for(int i = 1; i<=10; ++i)
-//        cout << "-------" << i << " === " << C[i] << endl; 
-//    prog.m_Matcher.printContributions();
+    
 	return 0;
 }

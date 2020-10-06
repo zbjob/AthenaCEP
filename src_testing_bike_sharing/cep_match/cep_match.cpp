@@ -23,8 +23,6 @@
 using namespace std;
 using namespace std::chrono;
 
-//static time_point<high_resolution_clock> g_BeginClock;
-
 time_point<high_resolution_clock> g_BeginClock;
 long int NumFullMatch = 0;
 long int NumHighLatency = 0;
@@ -34,7 +32,6 @@ uint64_t ACCLantency = 0;
 
 default_random_engine m_generator;
 uniform_int_distribution<int> m_distribution(1,100);
-
 
 inline void init_utime() 
 {
@@ -86,7 +83,7 @@ public:
 		{
 			m_MiningPrefix = _miningPrefix;
 			m_Miner.reset(new PredicateMiner(m_Definition, *m_Query));
-			_generateTimeoutEvents = true; // important for mining
+			_generateTimeoutEvents = true; 
 
 			for (size_t i = 0; i < m_Query->events.size() - 1; ++i)
 			{
@@ -138,7 +135,6 @@ public:
             return false;
         }
 
-
         event.attributes[0] = RawEvent.start_time;
         event.attributes[1] = RawEvent.end_time;
         event.attributes[2] = RawEvent.duration_sec;
@@ -147,40 +143,24 @@ public:
         event.attributes[5] = RawEvent.bike_id;
         event.attributes[6] = RawEvent.eventID;
 
-        
         uint64_t t = 86400000000;
         uint64_t ts= 300000000;
         const uint64_t one_min = 60*1000*1000;
 
-//        if(RawEvent.start_time < _day*t)
-//            return true;
-//
-//        //aggeragte the number of partial match into every minute.
-//        if(RawEvent.start_time > (_day+1)*t)
-//        {
-//            return false;
-//        } 
-
-        //for(int i=0; i <=6; ++i)
-        //    cout << event.attributes[i] << " , "  ;
-        //cout << endl;
-
-
 		event.attributes[Query::DA_ZERO] = 0;
 		event.attributes[Query::DA_MAX] = numeric_limits<attr_t>::max();
 		event.attributes[Query::DA_CURRENT_TIME] = current_utime();
-		//event.attributes[Query::DA_CURRENT_TIME] = (uint64_t)duration_cast<microseconds>(high_resolution_clock::now() - g_BeginClock).count(); 
+		
 		event.attributes[Query::DA_OFFSET] = m_DefAttrOffset;
 		event.attributes[Query::DA_ID] = m_DefAttrId;
 
 		const EventDecl* decl = m_Definition.eventDecl(event.typeIndex);
-		//assert(event.typeHash == StreamEvent::hash(decl->name));
-
+		
 		m_Matcher.event(event.typeIndex, (attr_t*)event.attributes);
 
         if(event.attributes[0] > Tick_PM_one_min + one_min) 
         {
-            //cout << m_one_min_cnt << " " << NumPartialMatch - Tick_PM_Cnt << endl;
+            
             cout << m_one_min_cnt << " " << NumPartialMatch << endl;
 
             m_one_min_cnt++;
@@ -191,8 +171,6 @@ public:
         return true;
 
     }
-
-
 
     bool readEventStreamFromFiles(string file)
     {
@@ -233,8 +211,6 @@ public:
             RawEvent.user_birth         = stoll(dataEvent[14]);
             RawEvent.user_gender         = stoll(dataEvent[15]);
 
-
-            
             RawEventQueue.push(RawEvent);
             m_Sation_Book[RawEvent.start_station_id] = dataEvent[5];
             m_Sation_Book[RawEvent.end_station_id] = dataEvent[9];
@@ -309,9 +285,6 @@ public:
         return ShedCnt;
     }
 
-
-
-
     bool readPMKeepBookings(string file)
     {
        ifstream ifs;
@@ -335,21 +308,15 @@ public:
                 dataEvent.push_back(cell);
             }
 
-
-            
             int stateID         =  stoi(dataEvent[0]);
             int timeSliceID     =  stoi(dataEvent[1]) - 1;
             int PMkey           =  stoi(dataEvent[2]);
 
-            //cout << "readPMKeepBookings " << m_Matcher.m_States[stateID].PMBooks.size() << endl; 
-            //cout << stateID << " " << timeSliceID << " " << PMkey << endl;
-            //cout << m_Matcher.m_States[stateID].timeSliceSpan << " " << m_Matcher.m_States[stateID].numTimeSlice << endl;;
             m_Matcher.m_States[stateID].PMBooks[timeSliceID].insert(PMkey);
             eventKeepBooking.insert(PMkey);
 
         }
     }
-
 
 	bool processEvent()
 	{
@@ -361,7 +328,7 @@ public:
 		event.attributes[Query::DA_ZERO] = 0;
 		event.attributes[Query::DA_MAX] = numeric_limits<attr_t>::max();
 		event.attributes[Query::DA_CURRENT_TIME] = current_utime();
-		//event.attributes[Query::DA_CURRENT_TIME] = (uint64_t)duration_cast<microseconds>(high_resolution_clock::now() - g_BeginClock).count(); 
+		
 		event.attributes[Query::DA_OFFSET] = m_DefAttrOffset;
 		event.attributes[Query::DA_ID] = m_DefAttrId;
 
@@ -396,12 +363,9 @@ public:
         for(auto&& it: m_Matcher.m_States)
         {
             std::cout << endl << "state contributions size == " << it.contributions.size() << endl;
-            //for(auto&& iter: it.contributions)
-                //cout << iter.first << "appears " << iter.second << "times" << endl;
-
+            
             std::cout << endl << "state consumptions size == " << it.consumptions.size() << endl;
-            //for(auto&& iter: it.consumptions)
-            //    cout << iter.first << "appears " << iter.second << "times" << endl;
+            
             std::cout << endl << "state scoreTable size == " << it.scoreTable.size() << endl;
             
         }
@@ -415,8 +379,6 @@ public:
         for(auto iter : m_Latency_booking)
             outFile << iter.first << "," << iter.second <<  endl;
     }
-
-    
 
 	void update_miner()
 	{
@@ -453,8 +415,6 @@ public:
 		dst.storeFile(eqlFilename.c_str());
 	}
 
-//protected:
-
 	void write_event(bool _timeout, uint32_t _state, const attr_t* _attributes)
 	{
 		StreamEvent r;
@@ -477,62 +437,23 @@ public:
 
 		uint64_t* outattr_it = r.attributes;
         string hotPath;
-   //     cout << "0," << flush;
+   
 		for (auto it : m_OutEventAttrSrc)
         {
 			*outattr_it++ = _attributes[it];
-    //        cout << _attributes[it] << "," << flush;
-            //hotPath += to_string( _attributes[it]) + ",";
-            //hotPath += m_Sation_Book[ _attributes[it]] + "---";
+    
         }
-     //   cout << endl;
-        //++m_HotPaths[hotPath];
-
-
-        //cout << "latency  in write event" << _attributes[Query::DA_FULL_MATCH_TIME] << "--" <<   _attributes[Query::DA_CURRENT_TIME] << "--" << r.attributes[Query::DA_CURRENT_TIME] << endl; 
-
-		//r.write();
-
-        //monitoring load shedding: if latency exceeds threshold for 2 times, call load shedding
-        //uint64_t la = _attributes[Query::DA_FULL_MATCH_TIME] - _attributes[Query::DA_CURRENT_TIME]; 
-        //if(_attributes[Query::DA_FULL_MATCH_TIME] / 50000 == time / 50000)
-        //{
-        //    acctime += _attributes[Query::DA_FULL_MATCH_TIME];
-        //    latency += la;
-        //    Rtime = time/50000; 
-        //    cntFullMatch++;
-        //}
-        //else
-        //{
-        //    if(latency/cntFullMatch > 150 && _attributes[Query::DA_FULL_MATCH_TIME] - lastSheddingTime > 3000000)
-        //    {
-        //        //m_Matcher.randomLoadShedding();
-        //        //m_Matcher.loadShedding();
-        //        lastSheddingTime = _attributes[Query::DA_FULL_MATCH_TIME];
-        //        ++loadCnt;
-        //    }
-        //    cntFullMatch = 1;
-        //    time = _attributes[Query::DA_FULL_MATCH_TIME];
-        //    latency = la;
-        //    acctime = time;
-        //    Rtime = time/50000;
-        //    
-        //}
-
+     
         uint64_t lateny = _attributes[Query::DA_FULL_MATCH_TIME] - _attributes[Query::DA_CURRENT_TIME];
          m_Latency_booking[lateny]++;
         ACCLantency += lateny;
-        
-        
         
         if(_attributes[Query::DA_FULL_MATCH_TIME] - _attributes[Query::DA_CURRENT_TIME] > 150 && _attributes[Query::DA_FULL_MATCH_TIME] - lastSheddingTime > 3000000)
         {
             
             if(m_Matcher.latencyFlag == true)
             {
-                //lastSheddingTime = _attributes[Query::DA_FULL_MATCH_TIME]; 
-               // m_Matcher.loadShedding();
-                //m_Matcher.randomLoadShedding();
+                
                 lastSheddingTime = _attributes[Query::DA_FULL_MATCH_TIME]; 
                 ++loadCnt;
                 
@@ -545,10 +466,6 @@ public:
         {
             m_Matcher.latencyFlag = false;
         }
-
-
-        //////
-
 
 		if (m_Miner)
 		{
@@ -574,7 +491,6 @@ public:
 		}
 	}
 
-//private:
 	QueryLoader			m_Definition;
 	const Query*		m_Query;
 
@@ -618,7 +534,6 @@ public:
     unordered_set<attr_t> eventKeepBooking;
 };
 
-//bool PatternMatcher::loadMonitoringFlag = false;
 int main(int _argc, char* _argv[])
 {
 	init_utime();
@@ -641,12 +556,10 @@ int main(int _argc, char* _argv[])
     double RISRatio = 0;
     double SlISRatio = 0;
             
-            
-
     int timeSlice = 1;
-    //string streamFile = "/home/bo/CEP_load_shedding/data/bike_sharing/bike_sharing_cleaned.csv";
+    
     string streamFile = "/home/bo/CEP_load_shedding/data/bike_sharing/newTmp.csv";
-    //string streamFile = "/home/bo/CEP_load_shedding/data/bike_sharing/6.csv";
+    
     string PMKeepingkeysFile = "/home/bo/CEP_load_shedding/data/bike_sharing/PM_keys_3TTL_1h_g10.csv";
 
 	int c;
@@ -704,14 +617,9 @@ int main(int _argc, char* _argv[])
 	if (!prog.init(deffile, queryName, miningPrefix, captureTimeouts, appendTimestamp))
 		return 1;
 
-    //prog.m_Matcher.print();
 	volatile uint64_t eventCounter = 0;
 
-
-
-    //PatternMatcher::setMonitoringLoadOn();
     PatternMatcher::setMonitoringLoadOff();
-
 
     attr_t _timeWindow = 1;
     _timeWindow *=60;
@@ -722,7 +630,7 @@ int main(int _argc, char* _argv[])
     
     prog.m_Matcher.setTimeWindow();
     prog.m_Matcher.setTimeSliceNum(timeSlice);
-    //cout << "[main] flag 1 " << endl;
+    
     if(SheddingIrrelevantFlag)
     {
         prog.readPMKeepBookings(PMKeepingkeysFile);
@@ -739,7 +647,6 @@ int main(int _argc, char* _argv[])
 	if (monitorFile)
 		monitor.start(monitorFile);
     
-    //setting up the indexes
     prog.m_Matcher.m_States[1].timePointIdx = 0;
     prog.m_Matcher.m_States[1].PMKeyIdx = 2;
 
@@ -758,25 +665,11 @@ int main(int _argc, char* _argv[])
         s.timeSliceSpan = _tsSpan;
     }
     
-
-
-   // cout << "monitoring " << PatternMatcher::MonitoringLoad() << endl;
-    //int loadCnt = 0;
-    
-	//while(prog.processEvent())
-//    for(int t = 0; t <= 30; ++t)
-//    {
-//        cout << "bike trips state in day " << t+1 << endl;
-//        cout << "========================" << endl;
-
-   // cout << "[main] flag 2 " << endl;
-
     if(RPMSFlag)
         prog.m_Matcher.setRandomPMShedding(RPMSRatio);
 
     if(SlPMSFlag)
         prog.m_Matcher.setSelectivityPMShedding(SlPMSRatio);
-
 
    uint64_t sheddingEventCnt = 0;
 
@@ -791,50 +684,8 @@ int main(int _argc, char* _argv[])
 
             if(SheddingIrrelevantFlag)
                 sheddingEventCnt = prog.HybridIrrelevantInputShedding(eventCounter);
-            //if(false && PatternMatcher::MonitoringLoad() == true){
-            //    if(eventCounter  == 1000000 )
-            //    {
-            //        PatternMatcher::setMonitoringLoadOff();
-            //        cout << "call loadshedding" << endl;
-
-            //        time_point<high_resolution_clock> t0 = high_resolution_clock::now();
-
-            //        prog.m_Matcher.computeScores4LoadShedding();
-            //        //prog.m_Matcher.loadShedding();
-
-            //        time_point<high_resolution_clock> t1 = high_resolution_clock::now();
-            //        cout << "1st load shedding time " << duration_cast<microseconds>(t1 - t0).count() << endl;
-            //        //prog.loadCnt++;
-
-            //    }
-
-                //if(eventCounter > 100000 && eventCounter % 100000 == 1)
-                //{
-
-                //    time_point<high_resolution_clock> t0 = high_resolution_clock::now();
-                //    prog.m_Matcher.loadShedding();
-                //    time_point<high_resolution_clock> t1 = high_resolution_clock::now();
-                //    cout << "laod shedding time " << duration_cast<microseconds>(t1 - t0).count() << endl;
-                //    ++loadCnt;
-                //}
-            //}
+            
         }
-
-
-
-
-
-        //prog.update_miner();
-        //prog.printContribution();
-        //std::cout << "perform " << prog.loadCnt << "loadshedding" << endl;
-//        std::cout << "eventCn " << eventCounter << endl;
-//        std::cout << "#full Match " << NumFullMatch << endl;
-//        std::cout << "#high latecny (> 150)" << NumHighLatency<< endl;
-//        std::cout << "#NumPartialMatch " << NumPartialMatch << endl;
-//        std::cout << "#NumDropedPM " << NumSheddingPM << endl;
-//        std::cout << "#NumDropedInputEvents " << sheddingEventCnt << endl;
-//        if(NumFullMatch)
-//            cout << "avg latency: " << (double) (ACCLantency/NumFullMatch) << endl;
 
         prog.dumpLatencyBooking("latency.csv");
 
@@ -848,6 +699,6 @@ int main(int _argc, char* _argv[])
             cout << a.first << " : " << a.second << endl;
 
         prog.m_HotPaths.clear();
-//    }
+
     return 0;
 }

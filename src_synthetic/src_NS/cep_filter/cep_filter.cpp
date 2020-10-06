@@ -46,7 +46,7 @@ int main(int _argc, char* _argv[])
 	StreamEvent event;
 	for(;event.read();eventId++)
 	{
-		// filter event id by argument list
+		
 		if (!eventFilter.empty())
 		{
 			auto it = lower_bound(eventFilter.begin(), eventFilter.end(), eventId);
@@ -54,13 +54,8 @@ int main(int _argc, char* _argv[])
 				continue;
 		}
 
-		// filter by timestamp
 		if (event.attributes[0] == 0)
 			continue;
-
-		// filter google cluster task timeout events
-//		if (event.typeHash != typeFilter)
-//			continue;
 
 		event.write();
 

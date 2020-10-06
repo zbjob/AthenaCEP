@@ -7,5 +7,4 @@ class HotColdEventQueue : public RingBuffer
     public:
     private:
 
-
 }

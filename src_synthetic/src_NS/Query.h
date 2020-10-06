@@ -61,11 +61,11 @@ struct Query
 
 	enum DefinedAttributes
 	{
-		DA_ID			= PatternMatcher::MAX_ATTRIBUTES - 1,	// sequential id of event in stream
-		DA_OFFSET		= PatternMatcher::MAX_ATTRIBUTES - 2,	// file offset of event in event stream
-		DA_CURRENT_TIME	= PatternMatcher::MAX_ATTRIBUTES - 3,	// local timestamp in us
-		DA_ZERO			= PatternMatcher::MAX_ATTRIBUTES - 4,	// always zero to support constant number checks
-		DA_MAX			= PatternMatcher::MAX_ATTRIBUTES - 5,	// always max attr_t for initialisation
+		DA_ID			= PatternMatcher::MAX_ATTRIBUTES - 1,	
+		DA_OFFSET		= PatternMatcher::MAX_ATTRIBUTES - 2,	
+		DA_CURRENT_TIME	= PatternMatcher::MAX_ATTRIBUTES - 3,	
+		DA_ZERO			= PatternMatcher::MAX_ATTRIBUTES - 4,	
+		DA_MAX			= PatternMatcher::MAX_ATTRIBUTES - 5,	
         DA_FULL_MATCH_TIME = PatternMatcher::MAX_ATTRIBUTES -6,
 
 		DA_COUNT = 6,
@@ -73,16 +73,16 @@ struct Query
 	};
 
 	std::string name;
-	std::vector<Event> events; // list of type and instance name of sequential events
+	std::vector<Event> events; 
 	std::vector<Predicate> where;
 	uint64_t within;
 
 	std::string returnName;
-	std::vector<std::pair<uint32_t,uint32_t> > returnAttr; // event and attr index for select
+	std::vector<std::pair<uint32_t,uint32_t> > returnAttr; 
 
 	std::vector<Aggregation> aggregation;
 
-	std::vector<std::pair<uint32_t, uint32_t> > attrMap; // mapping of eventIdx and AttributeIdx to RunAttrIdx
+	std::vector<std::pair<uint32_t, uint32_t> > attrMap; 
 
 	void insertEvent(Event _e, size_t _idx);
 	void generateCopyList(const std::vector<std::pair<uint32_t, uint32_t> >& _attrList, std::vector<uint32_t>& _copyList) const;

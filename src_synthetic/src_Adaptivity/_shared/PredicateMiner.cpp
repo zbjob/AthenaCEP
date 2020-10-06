@@ -7,7 +7,6 @@
 
 using namespace std;
 
-
 PredicateMiner::PredicateMiner(const QueryLoader& _queryLoader, const Query& _query)
 {
 	m_NumAttributes.resize(_queryLoader.numEventDecls());
@@ -56,11 +55,10 @@ void PredicateMiner::initList(size_t _listIdx, size_t _eventType)
 		const size_t numAttributes = m_EventMapping[_eventType].numAttributes;
 		const uint8_t* mapping = &m_EventMapping[_eventType].eventMapping[e * numAttributes];
 
-		// single attribute mining
 		for (size_t a = 1; a < numAttributes; ++a)
 		{
 			if (mapping[a] == 0xff)
-				continue; // there is no corresponding attribute in event type e
+				continue; 
 			
 			AppearanceInfo::Todo item;
 			item.attr1 = item.attr2 = a;
@@ -73,7 +71,6 @@ void PredicateMiner::initList(size_t _listIdx, size_t _eventType)
 			}
 		}
 
-		// combinational attribute mining
 		for (size_t a1 = 1; a1 < numAttributes; ++a1)
 		{
 			if (mapping[a1] == 0xff)
@@ -113,7 +110,7 @@ void PredicateMiner::initWorkerThreads(size_t _numThreads)
 
 void PredicateMiner::addEvent(uint32_t _type, const attr_t * _attributes)
 {
-	// add event to ring buffer
+	
 	EventItem item;
 	item.type = _type;
 	item.id = (uint32_t)_attributes[Query::DA_ID];
@@ -122,7 +119,6 @@ void PredicateMiner::addEvent(uint32_t _type, const attr_t * _attributes)
 		item.attributes[i] = _attributes[i];
 	m_EventBuffer.push_back(item);
 
-	// add event to time slice
 	while (m_CurrentSlice != _attributes[0] / m_SliceTime)
 	{
 		if (_attributes[0] / m_SliceTime - m_CurrentSlice >= m_NumSlices)
@@ -141,7 +137,6 @@ void PredicateMiner::addEvent(uint32_t _type, const attr_t * _attributes)
 
 	EventTypeSlice& mySlice = slice(m_CurrentSlice, _type);
 
-	// insert attribute values
 	const size_t numAttributes = m_NumAttributes[_type];
 	for (size_t i = 1; i < numAttributes; ++i)
 	{
@@ -149,7 +144,6 @@ void PredicateMiner::addEvent(uint32_t _type, const attr_t * _attributes)
 		assert(slice(m_CurrentSlice, _type).attribute[i].contains(_attributes[i]));
 	}
 
-	// insert into event type chained list
 	if (mySlice.empty())
 	{
 		mySlice.firstEventId = item.id;
@@ -208,7 +202,7 @@ void PredicateMiner::flushMatch()
 
 void PredicateMiner::removeTimeouts(attr_t _timestamp)
 {
-	// remove old events from ring buffer
+	
 	while (!m_EventBuffer.empty() && m_EventBuffer.front().attributes[0] + m_EventTimeout < _timestamp)
 		m_EventBuffer.pop_front();
 }
@@ -337,8 +331,6 @@ Query PredicateMiner::buildPredicateQuery(const QueryLoader& _queryLoader, const
 	e.type = _queryLoader.eventDecl(_predicate.eventId)->name;
 	dst.events.insert(dst.events.begin() + _idx + 1, e);
 
-	// move all event indices :(
-
 	for (auto& p : dst.where)
 	{
 		if (p.event1 > _idx)
@@ -359,7 +351,6 @@ Query PredicateMiner::buildPredicateQuery(const QueryLoader& _queryLoader, const
 			r.first++;
 	}
 
-	// add predicate
 	for (size_t i = 0; i < _predicate.numAttr; ++i)
 	{
 		Query::Predicate p = {};

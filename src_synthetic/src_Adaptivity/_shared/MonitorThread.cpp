@@ -36,7 +36,7 @@ bool MonitorThread::start(const char * _filename)
 					file << ',';
 			}
 			file << endl;
-			//this_thread::sleep_for(chrono::milliseconds());
+			
 			this_thread::sleep_for(chrono::seconds(1llu));
 		}
 		file.close();
@@ -60,17 +60,16 @@ bool MonitorThread::start_monitoring_latency( std::string _filename, std::queue<
             while(!latency_booking.empty())
             {
                 file << latency_booking.front() << endl;
-        //        cout << latency_booking.front() << endl;
+        
                 latency_booking.pop();
             }
-			//this_thread::sleep_for(chrono::milliseconds());
+			
 			this_thread::sleep_for(chrono::seconds(1llu));
 		}
 		file.close();
 	});
 	return true;
 }
-
 
 void MonitorThread::stop()
 {

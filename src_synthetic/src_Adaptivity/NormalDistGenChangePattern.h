@@ -14,11 +14,6 @@
 #include "PatternMatcher.h"
 #include "Query.h"
 
-
-// This version is not thread safe, because STL queue is not thread safe.
-// However, for only one producing thread and only one consuming thread, it almost works fine.
-// For multiple producing/consuming threads, a concurrent queue is necessary.
-
 class NormalDistGen
 {
 public:
@@ -32,12 +27,11 @@ public:
 private:
     std::thread         m_GenThread;
     volatile bool       m_StopThread;
-    //std::queue<NormalEvent>&  m_Buffer;
+    
     RingBuffer<NormalEvent>&  m_Buffer;
-    int                 m_BufferSize; // abstract length of the queue, independet with physical event qeueue
+    int                 m_BufferSize; 
     uint64_t            eventCnt;
     std::vector<std::pair<double, double>>       NormalDistributions;
     uint64_t            m_EventBVersion; 
 
-    
 };

@@ -7,25 +7,12 @@
 #include <map>
 #include <unordered_map>
 #include <unordered_set>
-//#include <chrono>
 
 typedef int64_t attr_t;
 typedef int64_t acceptCounter_t;
 
 using namespace std;
 
-//uint64_t pack(const uint32_t& lhs, const uint32_t& rhs)
-//{
-//    uint64_t val = lhs;
-//    val <<=32;
-//    val |= rhs;
-//    return val;
-//}
-//
-//std::pair<uint32_t, uint32_t> unpack(const uint64_t& val)
-//{
-//    return {val >>32, val &0x00000000ffffffff};
-//}
 class PatternMatcher
 {
 public:
@@ -78,33 +65,26 @@ public:
 	PatternMatcher();
 	~PatternMatcher();
 
-    
-	// setup
 	virtual void setTimeout(attr_t _timeout) { m_Timeout = _timeout; }
 
 	virtual void addState(uint32_t _idx, uint32_t _numAttributes, StateType _type = ST_NORMAL, uint32_t _kleenePlusAttrIdx = 0);
 	virtual void setCallback(uint32_t _state, CallbackType _type, const std::function<void(const attr_t*)>& _function);
 	virtual void addAggregation(uint32_t _state, AggregationFunction* _function, uint32_t _srcAttr, uint32_t _dstAttr);
 	virtual void addTransition(uint32_t _fromState, uint32_t _toState, uint32_t _eventType);
-	virtual void addPrecondition(uint32_t _param, attr_t _constant, Operator _op); // preconditions get checked before conditions and match = event[param1] op constant
+	virtual void addPrecondition(uint32_t _param, attr_t _constant, Operator _op); 
 
-	// match = state[param1] operator (event[param2] + _constant) OR
-	// match = event[param1] operator (event[param2] + _constant) in case of _postAggregationCheck
 	virtual void addCondition(uint32_t _param1, uint32_t _param2, Operator _op, attr_t _constant, bool _postAggregationCheck = false);
 	virtual void addActionCopy(uint32_t _src, uint32_t _dst);
 	void resetRuns();
 
-	// process
 	virtual uint32_t event(uint32_t _type, const attr_t* _attr);
 
-	// query results
 	uint32_t numRuns(uint32_t _stateId) const										{ return m_States[_stateId].count; }
 	size_t numAttributes(uint32_t _stateId) const									{ return m_States[_stateId].attr.size(); }
 	void run(uint32_t _stateId, uint32_t _runIdx, attr_t* _attrOut) const;
 
 	void clearState(uint32_t _stateId);
 
-    //for loadShedding learning
     void setStates2Transitions();
     void setStates2States();
     void computeScores4LoadShedding();
@@ -121,17 +101,10 @@ public:
     void setRandomPMShedding(double _ratio);
     void setSelectivityPMShedding(double _ratio);
 
-
     void print();
-   // void MonitorLatency(std::chrono::time_point t) {g_BeginClock = g;}
-
-
-
-
-
+   
 	static const OperatorInfo& operatorInfo(Operator _op);
 
-//protected:
 	struct Condition
 	{
 		uint32_t	param[2];
@@ -171,33 +144,27 @@ public:
 		bool runValid(uint32_t _idx) const { return attr.empty() || attr.front()[_idx] > timeout; }
 
         void setTimeSliceNum(int i = 0);
-        //void loadShedding();
-
+        
         void setPMKeyIdx(int i=0) { PMKeyIdx = i;}
 
-
-		//const std::unordered_multimap<attr_t, uint64_t>* indexMap(uint32_t _attributeIdx) const { return _attributeIdx == index_attribute ? &index : NULL; }
 		const std::multimap<attr_t, uint64_t>* indexMap(uint32_t _attributeIdx) const { return _attributeIdx == index_attribute ? &index : NULL; }
-
 
 		StateType	type;
 		uint32_t	kleenePlusAttrIdx;
 		uint32_t	count;
-		uint64_t	firstMatchId;  // only used to maintain the multiMap index ?
+		uint64_t	firstMatchId;  
 		std::vector<std::deque<attr_t> > attr;
 		std::vector<Aggregation> aggregation;
 
         vector<unordered_set<attr_t> > PMBooks;
         
-
 		std::function<void(const attr_t*)> callback_timeout;
 		std::function<void(const attr_t*)> callback_insert;
 
-        // for learning contributions
         uint32_t    KeyAttrIdx; 
         acceptCounter_t   accNum;
         acceptCounter_t   transNum;
-        //std::unordered_map<std::pair<attr_t, attr_t>, acceptCounter_t> tranCounter;
+        
         std::map<std::pair<attr_t, attr_t>, acceptCounter_t> tranCounter;
         std::unordered_map<attr_t,acceptCounter_t> valAccCounter;
         std::vector<std::pair<attr_t,double>> rankingTable;
@@ -205,13 +172,11 @@ public:
         std::unordered_map<attr_t, acceptCounter_t> consumptions;
         std::vector<std::pair<attr_t, double>>  scoreTable; 
         
-
         void setKeyAttrIdx(uint32_t _idx) {KeyAttrIdx = _idx;}
 
-	//private:
-		std::vector<uint32_t>						remove_list; // execution reject, remove negate event
+		std::vector<uint32_t>						remove_list; 
 		uint32_t									index_attribute;
-		//std::unordered_multimap<attr_t, uint64_t>				index;
+		
 		std::multimap<attr_t, uint64_t>				index;
 		attr_t										timeout = 0;
         uint32_t                                    ID;
@@ -234,18 +199,17 @@ public:
 		uint32_t	from;
 		uint32_t	to;
 
-		std::vector<Condition>	preconditions;	// checked per incoming event
-		std::vector<Condition>	conditions;		// checked per run per incoming event
-		std::vector<Condition>	postconditions;	// checked per kleene result post aggregation
+		std::vector<Condition>	preconditions;	
+		std::vector<Condition>	conditions;		
+		std::vector<Condition>	postconditions;	
 		std::vector<CopyAction>	actions;
         std::vector<State>* states = NULL;
-
 
 		void updateHandler(const State& _from, const State& _to);
 		void setCustomExecuteHandler(std::function<void(State&, State&, uint32_t, const attr_t*)> _handler);
 
 		uint32_t checkEvent(State& _from, State& _to, size_t _runOffset, const attr_t* _attr);
-	//private:
+	
 		uint32_t	(Transition::*checkForMatch)(State&, State&, size_t, const attr_t*);
 		void		(Transition::*executeMatch)(State&, State&, uint32_t, const attr_t*);
 
@@ -259,11 +223,8 @@ public:
 
         void updateContribution( State& _from, State& _to, uint32_t idx, attr_t valFrom, attr_t valTo, attr_t * _attributes);
 
-		
-		// there are two batch testing methods. the first checks every run in _state and appends every match to _matchOut. The second method checks every run in _matchOut starting at _matchOffsets and removes rejects.
 		static void testCondition(const Condition& _condition, const State& _state, size_t _runOffset, const attr_t* _attr, std::function<void(uint32_t)> _callback);
 
-		// kleene member
 		uint32_t checkKleene(State& _from, State& _to, size_t _runOffset, const attr_t* _eventAttr);
 		void executeKleene(State& _from, State& _to, uint32_t _idx, const attr_t* _attributes);
 
@@ -278,7 +239,6 @@ public:
 
 	void testCondition(const Condition& _condition, const State& _state, const attr_t* _attr, uint32_t _matchOffset, std::vector<uint32_t>& _matchOut);
 
-//protected:
     public:
 
 	std::vector<State> m_States;
@@ -289,7 +249,6 @@ public:
 	attr_t		m_Timeout;
     bool Rflag;
 };
-
 
 inline bool checkCondition(attr_t _p1, attr_t _p2, PatternMatcher::Operator _op)
 {

@@ -36,11 +36,11 @@ void NormalDistGen::run(double e11, double d11,
         {
            while(m_Buffer.size() > m_BufferSize )
            {
-                //this_thread::sleep_for(chrono::milliseconds(10));
+                
            }
-           //cout << "stream generator " << eventCnt << endl;
+           
                 NormalEvent Event;
-                int dice_roll = distribution(generator);  // generates number in the range [1,20]
+                int dice_roll = distribution(generator);  
                 if(dice_roll == 1 || dice_roll==2) {
                     Event.name = "A";
                     Event.v1 = (attr_t) N11(generator);
@@ -68,21 +68,12 @@ void NormalDistGen::run(double e11, double d11,
                 else if(TriggerEventB &&  dice_roll < 7 && dice_roll > 3){
                     Event.name = "B";
                     Event.v1 = (attr_t) N21(generator);
-                    //Event.v1 = (attr_t) m_EventBVersion;
+                    
                     Event.v2 = (attr_t) N22(generator);
                     Event.ArrivalQTime = (uint64_t)duration_cast<microseconds>(high_resolution_clock::now() - g_BeginClock).count();
                     Event.ID = (uint64_t) IDgen(generator);
                     
                     m_Buffer.push_back(Event);
-
-                    // inserting singal events dicrecly followed by B
-                  //  NormalEvent e;
-                  //  e.name = "Z";
-                  //  e.v1 = 500;
-                  //  e.v2 = 500;
-                  //  e.ArrivalQTime = (uint64_t)duration_cast<microseconds>(high_resolution_clock::now() - g_BeginClock).count();
-                  //  e.ID = (uint64_t) IDgen(generator);
-                  //  m_Buffer.push_back(e);
 
                     this_thread::sleep_for(chrono::milliseconds(5));
 
@@ -98,16 +89,8 @@ void NormalDistGen::run(double e11, double d11,
 
                 }
 
-                //m_Buffer.push_back(Event);
-                //if (eventCnt < 2)
-                //{
-                //    //m_StopThread = true;
-                //    break;
-                //}
-            
-        } //for
+        } 
         m_StopThread = true;
-
 
     });
   
@@ -115,7 +98,7 @@ void NormalDistGen::run(double e11, double d11,
 
 bool NormalDistGen::stop()
 {
-    //if(m_StopThread) 
+    
         m_GenThread.join();
 
     return m_StopThread;

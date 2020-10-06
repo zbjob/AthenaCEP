@@ -1,12 +1,11 @@
 #include "NormalDistGen.h"
-//#include "RingBuffer.h"
+
 #include <chrono>
-//#include "GlobalClock.h"
+
 #include <fstream>
 
 using namespace std;
 using namespace std::chrono;
-
 
 void NormalDistGen::run(double e11, double d11, 
                         double e12, double d12, 
@@ -36,13 +35,9 @@ void NormalDistGen::run(double e11, double d11,
         
         for(int cnt = 0; cnt < eventCnt; ++cnt)
         {
-           //while(m_Buffer.size() > m_BufferSize )
-           //{
-           //     this_thread::sleep_for(chrono::milliseconds(10));
-           //}
-           //cout << "stream generator " << eventCnt << endl;
+           
                 NormalEvent Event;
-                int dice_roll = distribution(generator);  // generates number in the range [1,20]
+                int dice_roll = distribution(generator);  
                 if(dice_roll == 1 || dice_roll > 3) {
                     Event.name = "A";
                     Event.v1 = (attr_t) N11(generator);
@@ -58,7 +53,6 @@ void NormalDistGen::run(double e11, double d11,
                     Event.ArrivalQTime = (uint64_t)duration_cast<microseconds>(high_resolution_clock::now() - g_BeginClock).count();
                     Event.ID = (uint64_t) IDgen(generator);
 
-
                 }
                 else if(dice_roll ==3){
                     Event.name = "C";
@@ -69,20 +63,11 @@ void NormalDistGen::run(double e11, double d11,
 
                 }
 
-
                 ofs << Event.name << "," << Event.ArrivalQTime << "," << Event.ID << "," << Event.v1 << "," <<  Event.v2 <<  endl;
 
-                //m_Buffer.push_back(Event);
-                //if (eventCnt < 2)
-                //{
-                //    //m_StopThread = true;
-                //    break;
-                //}
-            
-        } //for
+        } 
         ofs.close();
         m_StopThread = true;
-
 
     });
   
@@ -90,7 +75,7 @@ void NormalDistGen::run(double e11, double d11,
 
 bool NormalDistGen::stop()
 {
-    //if(m_StopThread) 
+    
         m_GenThread.join();
 
     return m_StopThread;
@@ -101,19 +86,13 @@ int main()
     int eventCnt = 5000000;
     string outputFile = "StreamLog_500K.csv";
     NormalDistGen StreamGenerator(eventCnt, outputFile);
-    //StreamGenerator.run(45,5,//Distibution for A.v1
-    //                    50,3,  // ... A.v2
-    //                    40,5,  // ... B.v1
-    //                    55,3,   // ... B.v2
-    //                    50,3,  // ... C.v1
-    //                    40,3);  // ... C.v2
-
-    StreamGenerator.run(45,10,//Distibution for A.v1
-                        50,10,  // ... A.v2
-                        40,10,  // ... B.v1
-                        55,10,   // ... B.v2
-                        50,10,  // ... C.v1
-                        33,10);  // ... C.v2
+    
+    StreamGenerator.run(45,10,
+                        50,10,  
+                        40,10,  
+                        55,10,   
+                        50,10,  
+                        33,10);  
     
     StreamGenerator.stop();
     

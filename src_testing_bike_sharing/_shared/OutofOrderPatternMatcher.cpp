@@ -9,7 +9,7 @@ OutofOrderPatternMatcher::OutofOrderPatternMatcher() : m_LastEventTimestamp(0)
 
 void OutofOrderPatternMatcher::init(const Query* _query, const std::function<void(const attr_t*)>& _revokeCallback)
 {
-	// find relevant event types
+	
 	for (auto& transition : m_Transitions)
 	{
 		if (transition.eventType >= m_StoreEvent.size())
@@ -18,7 +18,6 @@ void OutofOrderPatternMatcher::init(const Query* _query, const std::function<voi
 	}
 	m_EventQueue.resize(m_StoreEvent.size());
 
-	// setup magical _MAX attribute to be the timestamp of partial match termination
 	for (auto& t : m_Transitions)
 	{
 		if (m_States[t.to].type != ST_REJECT)
@@ -26,7 +25,7 @@ void OutofOrderPatternMatcher::init(const Query* _query, const std::function<voi
 
 		if (m_States[t.from].type == ST_ACCEPT)
 		{
-			// update reject state to be accepting revoke state
+			
 			m_States[t.from].setAttributeCount((uint32_t)_query->attrMap.size());
 			m_States[t.to].type = ST_ACCEPT;
 			m_States[t.to].callback_insert = _revokeCallback;
@@ -57,7 +56,6 @@ void OutofOrderPatternMatcher::init(const Query* _query, const std::function<voi
 				}
 			}
 
-			// uncatched reject will result in attribute array overflow during event replay
 			assert(found);
 		}
 	}
@@ -109,7 +107,6 @@ uint32_t OutofOrderPatternMatcher::ooevent(uint32_t _type, EventInfo & _event)
 		}
 	}
 
-	// insert event
 	for (auto it = m_EventQueue[_type].rbegin(); it != m_EventQueue[_type].rend(); ++it)
 	{
 		if ((*it).attribute[0] < _event.attribute[0])

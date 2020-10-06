@@ -92,7 +92,6 @@ public:
 
 		_q.insertEvent(e, _dst);
 
-		// copy conditions
 		size_t numWhere = _q.where.size();
 		for (size_t k = 0; k < numWhere; ++k)
 		{
@@ -103,7 +102,6 @@ public:
 			}
 		}
 
-		// add out of order timestamp check
 		_q.where.push_back({ _prevEvent, _dst, 0, 0, PatternMatcher::OP_LESS });
 		_q.where.push_back({ _nextEvent, _dst, 0, 0, PatternMatcher::OP_GREATER });
 	}
@@ -121,7 +119,7 @@ public:
 			{
 				if (_q.events[i].stopEvent)
 				{
-					// duplicate stop event to every but last event
+					
 					uint32_t nextNormalEvent = i + 1;
 					while (_q.events[nextNormalEvent].stopEvent) nextNormalEvent++;
 
@@ -141,14 +139,12 @@ public:
 				}
 				else
 				{
-					// store dummy attribute. holding the reject timestamp
+					
 					_q.where.push_back({ lastNormalEvent, i, Query::DA_MAX, 0, PatternMatcher::OP_GREATER });
 				}
 
-				// check in order (ei.timestamp > ej.timestamp)
 				_q.where.push_back({ lastNormalEvent, i, 0, 0, PatternMatcher::OP_LESS });
 
-				// check timeout (e0.timestamp >= ei.timestamp - time window)
 				_q.where.push_back({ 0, i, 0, 0, PatternMatcher::OP_GREATEREQUAL, -(attr_t)_q.within });
 			}
 
@@ -166,7 +162,6 @@ public:
 		m_Definition.storeFile("_work\\oo.eql");
 
 	}
-
 
 	bool processEvent()
 	{

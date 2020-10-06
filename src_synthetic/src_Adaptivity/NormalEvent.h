@@ -2,7 +2,6 @@
 #include <string>
 #include "PatternMatcher.h"
 
-
 class NormalEvent
 {
     public:
@@ -10,7 +9,6 @@ class NormalEvent
         NormalEvent(){}
         ~NormalEvent(){}
        
-        //attr_t attributes[EventDecl::MAX_ATTRIBUTES];
         attr_t  v1;
         attr_t  v2;
         attr_t  ArrivalQTime;

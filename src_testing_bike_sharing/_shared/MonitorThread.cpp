@@ -36,7 +36,7 @@ bool MonitorThread::start(const char * _filename)
 					file << ',';
 			}
 			file << endl;
-			//this_thread::sleep_for(chrono::milliseconds(10));
+			
 			this_thread::sleep_for(chrono::seconds(1llu));
 		}
 		file.close();

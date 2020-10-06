@@ -17,8 +17,6 @@ Simply include this file to your project and use it
 #include <iostream>
 #include <ctime>
 
-//using namespace std;
-
 inline int ST2_decision_tree(const std::vector<double> & feature_vector) 
 {
 	if (feature_vector.at(0) <= 54.5) {
@@ -113,23 +111,23 @@ inline int OptST2_DST(int x0, int x1)
         return 0;
 }
 
-//int main()
-//{
-//    int x0 = 50;
-//    int x1 = 49;
-//    std::vector<double> v;
-//    v.push_back(x0);
-//    v.push_back(x1);
-//
-//    clock_t beg = clock();
-//    std::cout << ST2_decision_tree(v) << std::endl;
-//    clock_t end = clock();
-//    cout << "single call time naive: " << double(end-beg)/CLOCKS_PER_SEC << endl;
-//    
-//    beg = clock();
-//    std::cout << OptST2_DST(x0,x1) << std::endl;
-//    end = clock();
-//    cout << "single call time opt: " << double(end-beg)/CLOCKS_PER_SEC << endl;
-//}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

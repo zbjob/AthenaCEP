@@ -33,11 +33,8 @@ int main(int _argc, char* _argv[])
 		}
 	}
 
-
-	// set input/output stream to binary
 	StreamEvent::setupStdIo();
 
-	// load eql file
 	QueryLoader def;
 	if (!def.loadFile(deffile))
 	{
@@ -45,7 +42,6 @@ int main(int _argc, char* _argv[])
 		return false;
 	}
 
-	// select query of eql file
 	const Query* query = !queryName ? def.query((size_t)0) : def.query(queryName);
 	if (!query)
 	{
@@ -53,25 +49,20 @@ int main(int _argc, char* _argv[])
 		return false;
 	}
 
-	// add one thread for IO
 	unsigned int numThreads = std::thread::hardware_concurrency() + 1;
 
 	BatchWorker* worker = new BatchWorker[numThreads];
 	for (unsigned int i = 0; i < numThreads; ++i)
 	{
 		QueryLoader::Callbacks cb;
-		// TODO: setup callbacks for matching events here
-
+		
 		unique_ptr<PatternMatcher> matcher(new PatternMatcher);
 		def.setupPatternMatcher(query, *matcher, cb);
 
-		// TODO: modify pattern matcher to reflect the new type of query
-		
 		worker[i].setPatternMatcher(move(matcher));
 		worker[i].start();
 	}
 
-	// wait for all threads to finish
 	delete[] worker;
 	return 0;
 }

@@ -23,14 +23,12 @@ PatternMatcher::PatternMatcher()
     latencyFlag = false;
     Rflag = true;
 
-
 	assert(OP_MAX == 6 && "update s_TestFunc1");
 }
 
 PatternMatcher::~PatternMatcher()
 {
 }
-
 
 void PatternMatcher::setRandomPMShedding(double _ratio)
 {
@@ -153,11 +151,6 @@ void PatternMatcher::Transition::testCondition(const Condition& _condition, cons
 {
 	const attr_t eventParam = _attr[_condition.param[1]] + _condition.constant;
 
-    
-
-    //if(_state.ID == 1)
-    //    cout << "testCondition from 1 to 2" << endl;
-	// special case for index use
 	const auto* index = _state.indexMap(_condition.param[0]);
 	if (index && _condition.op == OP_EQUAL)
 	{
@@ -223,7 +216,7 @@ void PatternMatcher::computeScores4LoadShedding()
             break;
         if(it.ID == 0)
             continue;
-        //it.scoreTable.clear();
+        
         it.scoreTable.reserve(60000);
             for(auto && iterConsumption : it.consumptions)
             {
@@ -273,13 +266,8 @@ void PatternMatcher::loadShedding()
 
 void PatternMatcher::randomLoadShedding()
 {
-    //if(Rflag == true)
-    //{
-    //srand(time(NULL));
+    
     srand((uint64_t)duration_cast<microseconds>(high_resolution_clock::now() - g_BeginClock).count()<<2);
-    //Rflag = false;
-    //}
-    //srand(time())
     
     cout << "perform random load shedding" << endl;
     for(auto && it : this->m_States)
@@ -297,12 +285,8 @@ void PatternMatcher::randomLoadShedding()
                 int size = it.attr.front().size();
                 int ran = rand() % size + 1;
                 
-                //if(it.attr.front()[ran] == 0)
-                //    --cnt;
-                //else
                     it.attr.front()[ran] = 0;
         }
-        
         
     }
     
@@ -409,7 +393,7 @@ void PatternMatcher::State::setIndexAttribute(uint32_t _idx)
 
 void PatternMatcher::State::insert(const attr_t * _attributes)
 {
-    //auto start = std::chrono::high_resolution_clock::now();
+    
 	if(callback_insert)
 		callback_insert(_attributes);
 
@@ -418,7 +402,7 @@ void PatternMatcher::State::insert(const attr_t * _attributes)
 
     if(timeSliceID < 0 || timeSliceID >3)
     {
-       // cout << "[insert] " << timeSliceID << " " << timeSliceSpan << endl;
+       
         return;
     }
     if(sheddingIrrelaventFlag && PMBooks[timeSliceID].count(key) == 0)
@@ -427,49 +411,22 @@ void PatternMatcher::State::insert(const attr_t * _attributes)
             return;
     }
 
-    //int PMDice_roll  = _m_distribution(_m_generator); 
-    //if(PMDice_roll < randomPMDiceUB)
-    //{
-    //    ++NumSheddingPM;
-    //    return;
-    //}
-
-    //if(PMDice_roll < selectivityPMDiceUB)
-    //{
-    //    ++NumSheddingPM;
-    //    return;
-    //}
-//    cout << "[insert] flag 2 " << endl;
-	// insert attributes
 	const attr_t* src_it = _attributes;
 	for (auto& it : attr)
 		it.push_back(*src_it++);
 
 	if (index_attribute)
 	{
-		// update index
-		const uint64_t matchId = firstMatchId + attr[0].size() - 1; // last matching point
+		
+		const uint64_t matchId = firstMatchId + attr[0].size() - 1; 
 		index.insert(make_pair(_attributes[index_attribute], matchId));
 	}
-
-
 
 	if (attr.empty())
 		count++;
 
-    //for contribution learning
     ++accNum;
-    //auto iter = valAccCounter.find(_attributes[KeyAttrIdx]);
-    //if(iter == valAccCounter.end())
-    //    valAccCounter.insert(std::make_pair(_attributes[KeyAttrIdx],1));
-    //else
-    //    iter->second++;
-    //cout << KeyAttrIdx << "---" << _attributes[KeyAttrIdx] << endl;
-
-    //auto elapsed = std::chrono::high_resolution_clock::now() - start;
-    //long long microseconds = std::chrono::duration_cast<std::chrono::nanoseconds>(elapsed).count();
-    //cout << "single call time insert: in us " << microseconds << endl;
- //   cout << "[insert] done 1" << endl;
+    
 }
 
 void PatternMatcher::State::endTransaction()
@@ -494,18 +451,17 @@ void PatternMatcher::State::endTransaction()
 template<typename T> auto begin(const std::pair<T, T>& _obj) { return _obj.first; }
 template<typename T> auto end(const std::pair<T, T>& _obj) { return _obj.second; }
 
-void PatternMatcher::State::removeTimeouts(attr_t _value) // The assumption is that event streams into CEP Engine in time order`
+void PatternMatcher::State::removeTimeouts(attr_t _value) 
 {
 	if (attr.empty())
-		return; // non attribute storing state (ACCEPT, REJECT)
+		return; 
 
-	while (!attr.front().empty() && attr.front().front() < _value) // the first deque stores timestamps
+	while (!attr.front().empty() && attr.front().front() < _value) 
 	{
-        // if time out, find all the relevant attribute in the index. Index stores all the indexes of events with the same attribute value.
-        // e.g. a1b2,a1b4, if a1 timeout, a1b2,a1b4 must be removed
+        
 		if (index_attribute)
 		{
-			// update index
+			
 			auto range = index.equal_range(attr[index_attribute].front());
 			for (auto it = range.first; it != range.second; ++it)
 			{
@@ -517,48 +473,28 @@ void PatternMatcher::State::removeTimeouts(attr_t _value) // The assumption is t
 			}
 		}
 
-        //for loadshedding: leanring onsumptions
-        //cout << "in removeTimeouts, MonitoringLoad = " << PatternMatcher::MonitoringLoad() << endl;
         if(PatternMatcher::MonitoringLoad() == true)
         {
-            //cout << "consumption MonitoringLoad is on" << endl;
+            
             for(auto&& it : *states)
             {
-                //std::cout << "in learning caonsumptions " << endl;
-                //std::cout << "it.ID = " << it.ID << "| this->ID =" << this->ID << endl;
+                
                if(it.ID > this->ID || it.KeyAttrIdx ==0)
                {   
-                   //std::cout << "touching continue point" << endl;
+                   
                    continue;
             
                }
-               //auto iterCon = it.consumptions.find( this->attr[it.KeyAttrIdx].front() );
-               ////cout << "flag 1" << endl;
-               //if(iterCon == it.consumptions.end())
-               //{
-               //    //cout << "flag 2" << endl;
-               //    it.consumptions.insert(std::make_pair(this->attr[it.KeyAttrIdx].front(),1));
-               //    //cout << "flag 3" << endl;
-
-               //}
-               //else
-               //{
-               //    //cout << "flag 4" << endl;
-               //    iterCon->second++;
-               //}
+               
                it.consumptions[attr[it.KeyAttrIdx].front()] += 1;
-               //cout << " added one item to comsuptions" << endl;
+               
             }
         }
-        //learning consumption finish
         
-        //cout << "flag 5" << endl;
-
 		for (auto&& it : attr)
 			it.pop_front();
 		firstMatchId++;
         --NumPartialMatch;
-
 
 	}
 
@@ -621,106 +557,49 @@ uint32_t PatternMatcher::Transition::checkEvent(State & _from, State & _to, size
 	}
 
 	return (this->*checkForMatch)(_from, _to, _runOffset, _attr);
-    //uint32_t counter = (this->*checkForMatch) (_from, _to, _runOffset, _attr);
     
 }
 
 void PatternMatcher::Transition::updateContribution(State& _from, State& _to, uint32_t idx, attr_t valFrom,attr_t valTo, attr_t* _attributes)
 {
-    //cout << "flag1 in updateContribution" << endl;
     
-
     if (_from.ID == 0)
         return;
     
     _from.transNum++;
     
-    //cout << "flag1,2 in updateContribution" << endl;
-
     if(_to.type == ST_ACCEPT)
     {
     
-    //cout << "state[" << _from.ID << "] KeyAttrIdx =" << _from.KeyAttrIdx << "--- state[" << _to.ID << "] KeyAttrIdx=" << _to.KeyAttrIdx << endl;
-    //cout << valFrom << "---" << valTo << endl;
-    //cout << "from index_attribute " << _from.index_attribute << "--- to index_attribute" << _to.index_attribute << endl;
-    //cout << valFrom << "---" << valTo << endl;
-    //must be called after state insert method for both _from and _to states
     if(!this->states)
     {
         cout << "states == " << this->states << endl;
         return;
     }
-    //cout << "flag2 in updateContribution" << endl;
+    
     for(auto&& it : *states )
     {
-        //cout << "contribution learning ";
+        
         if(it.type != ST_ACCEPT && it.KeyAttrIdx != 0)
         {
-            //auto iterCon = it.contributions.find(_attributes[it.KeyAttrIdx]);
-            //    if(iterCon == it.contributions.end())
-            //    {
-            //        it.contributions.insert(std::make_pair(_attributes[it.KeyAttrIdx],1));
-            //    }
-            //    else
-            //        iterCon->second++;
+            
             it.contributions[_attributes[it.KeyAttrIdx]] += 1;
-            //cout <<  _attributes[it.KeyAttrIdx] << ",";
+            
         }
-        //cout << endl;
-
+        
     }
 
-
-    //acceptCounter_t trans = 0;
-    //double learningScore = 0;
-    //
-
-    //std::pair<attr_t, attr_t> matchPair = std::make_pair(valFrom, valTo);
-    ////
-    ////auto iterAcc = _from.valAccCounter.find(valFrom);
-    ////if(iterAcc == _from.valAccCounter.end())
-    //    //cout << "_from.valAccCounter is empty" << endl;
-    //auto iterTran = _from.tranCounter.find(matchPair);
-
-    ////if(_from.tranCounter.find(matchPair) == _from.tranCounter.end())
-    //if(iterTran == _from.tranCounter.end())
-    //{
-    //    _from.tranCounter.insert(std::make_pair(matchPair,1));
-    //    trans = 1; 
-    //    //cout << "in test tranCounter.end()" << endl;
-    //}
-    //else
-    //    trans = ++(iterTran->second);
-    ////cout << "after ++iterTran->second" << endl;
-    //    //learningScore = (_from.valAccCounter.find(valFrom)->second/_from.accNum) * (trans/_from.transNum);
-    //if(iterAcc != _from.valAccCounter.end())
-    //    learningScore = iterAcc->second * trans; 
-    //cout << "after iterAcc->second" << endl;
-        
-
-   // cout << "leaving updateContribution" << endl;
-
-
-    //_to.accNum++;
-
-    //--following should be maitained in insert method...
-    //if(_to.valAccCounter.find(valTo) == _to.valAccCounter.end())
-    //    _to.valAccCounter.insert(std::make_pair(valTo,1));
-    //else
-    //    _to.valAccCounter.find(valTo)->second++;
     }
 }
 
 void PatternMatcher::setStates2Transitions()
 {
-   // cout <<"in setStates2Transitions" << endl;
-    
+   
     for(auto && it: m_Transitions)
     {
         it.states = &m_States;
     }
 
-  //  cout << "leave setStates2Transitions" << endl;
 }
 
 void PatternMatcher::setStates2States()
@@ -734,42 +613,26 @@ void PatternMatcher::setStates2States()
 void PatternMatcher::Transition::executeTransition(State & _from, State & _to, uint32_t _idx, const attr_t* _attributes)
 {
 	attr_t attributes[MAX_ATTRIBUTES];
-    //for(int i=0; i!= MAX_ATTRIBUTES; ++i)
-    //{
-        //cout << "attribute[" << i << "]=" << attributes[i] << endl;
-    //}
-
-	// copy attributes from previous events
+    
 	for (uint32_t a = 0; a < _from.attr.size(); ++a)
 	{
 		attributes[a] = _from.attr[a][_idx];
-        //cout << a << endl;
+        
 	}
 
-	// copy new incoming event attributes
 	for (auto it : actions)
 	{
 		attributes[it.dst] = _attributes[(int32_t)it.src];
-        //cout << "added attr " << it.dst << " == " << attributes[it.dst] << endl;
+        
 	}
 
     ++NumPartialMatch;
 
-    //for latency computing for load shedding
-    //
-//    if( _to.type != ST_ACCEPT)
-//    {
-//         cout << _to.ID << "," << flush;
-//         for(int i=0; i <  _to.attr.size(); ++i)
-//             cout << attributes[i] << "," << flush;
-//         cout << endl;
-//    }
     if(_to.type == ST_ACCEPT)
     {
         ++NumFullMatch;
         attributes[Query::DA_FULL_MATCH_TIME] = (uint64_t)duration_cast<microseconds>(high_resolution_clock::now() - g_BeginClock).count();  
-        //cout << "Latency in executeTransition " << attributes[Query::DA_FULL_MATCH_TIME] - _attributes[Query::DA_CURRENT_TIME] << "at " << attributes[Query::DA_FULL_MATCH_TIME] <<endl;
-       // cout << attributes[Query::DA_FULL_MATCH_TIME] << "," << attributes[Query::DA_FULL_MATCH_TIME] - _attributes[Query::DA_CURRENT_TIME] <<endl;
+        
         if( attributes[Query::DA_FULL_MATCH_TIME] - _attributes[Query::DA_CURRENT_TIME] > 150) 
         ++NumHighLatency;
         attributes[Query::DA_CURRENT_TIME] = _attributes[Query::DA_CURRENT_TIME];
@@ -804,9 +667,7 @@ uint32_t PatternMatcher::Transition::checkNoCondition(State & _from, State & _to
 
 uint32_t PatternMatcher::Transition::checkSingleCondition(State & _from, State & _to, size_t _runOffset, const attr_t * _eventAttr)
 {
-    //if(_from.ID == 1)
-    //    cout << "checkSingleCondition from 1 to 2" << endl;
-
+    
 	uint32_t counter = 0;
 
 	const Condition& c = conditions.front();
@@ -863,7 +724,6 @@ uint32_t PatternMatcher::Transition::checkKleene(State & _from, State & _to, siz
 {
 	(this->*checkForMatchOrg)(_from, _to, _runOffset, _eventAttr);
 
-	// sort resulting runs by timestamp
 	std::sort(runs.begin(), runs.end(), [](const runs_t::value_type& _a, const runs_t::value_type& _b) -> bool {
 		return _a.second < _b.second;
 	});

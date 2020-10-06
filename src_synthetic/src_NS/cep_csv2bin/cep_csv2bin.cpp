@@ -28,12 +28,10 @@ std::vector<std::string> explode(const std::string& str, char delimiter)
 	return tokens;
 }
 
-
-// some hard coded attributes generated from multiple attributes or thin air
 enum GeneratedAttribute
 {
-	GA_ID = -1, // sequentially counting number
-	GA_JOBTASK = -2, // job_id << 20 | task_index
+	GA_ID = -1, 
+	GA_JOBTASK = -2, 
 
 	GA_NUM = 2
 };
@@ -110,7 +108,7 @@ attr_t parseAttribute(const char* _str)
 	{
 		uint64_t buf[2];
 		MurmurHash3_x64_128(_str, (int)strlen(_str), 0xBABE05u, buf);
-		//storeAttributeHash(buf[0], _str);
+		
 		return buf[0];
 	}
 	else if (hasPoint)
@@ -221,11 +219,9 @@ int main(int _argc, char* _argv[])
 		o.typeIndex = (uint16_t)m.event_type;
 		o.typeHash = m.event_type_hash;
 
-		// clear all used attributes
 		for (size_t i = 0; i < m.num_attr; ++i)
 			o.attributes[i] = 0;
 
-		// copy columns
 		for (auto it : m)
 		{
 			switch (it.first)

@@ -12,9 +12,7 @@ AthenaCEP aims at solving the problem of load shedding in CEP. It provides a fun
 * AZll running/configuration scripts are written for linux OS.
 * We build parsers to parse query workloads from files. We define query workloads in files ending with `.eql`. 
 
-## Code
-
-## Data
+## Code and Data
 
 
 The main funciton of the CEP engine is in ./AthenaCEP/src_synthetic/src_NS/cep_match/cep_match.cpp

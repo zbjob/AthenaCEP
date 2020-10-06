@@ -6,12 +6,10 @@ AthenaCEP aims at solving the problem of load shedding in CEP. It provides a fun
 ---
 ## Prerequisites
 
-* The compiler needs to support C++11 or higher. In Makefiles, the default compiler is set as g++.
-requirements for libraries: POSIX Threads(Pthreads), Python, scikit-learn
-*All running/configuration scripts are written for linux OS. Windows OS users need to change the paths accordingly (replace "/" with "\\").
-* We build parsers to parse query workloads from files. We define query workloads in files ending with `.eql`. 
-optimizations have been implemented for intel X86 processors including memory alignment, improving cache hit ratio.
-
+* Compilers: The compiler needs to support C++11 or higher. In Makefiles, the default compiler is set as g++.
+* Libraries: POSIX Threads(Pthreads), STL,  Python, scikit-learn for offiline machine learning.
+*All running/configuration scripts are written for linux OS.
+*We build parsers to parse query workloads from files. We define query workloads in files ending with `.eql`. 
 
 The main funciton of the CEP engine is in ./AthenaCEP/src_synthetic/src_NS/cep_match/cep_match.cpp
 

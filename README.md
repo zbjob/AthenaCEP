@@ -7,6 +7,7 @@ AthenaCEP aims at solving the problem of load shedding in CEP. It provides a fun
 ## Prerequisites
 
 * Compilers: The compiler needs to support C++11 or higher. In Makefiles, the default compiler is set as g++.
+* Advanced Vector Extensions: We set ccompiler flag -mavx2 for X86 machines. Howevever, if you may remove it from Makefile if it is not supported.
 * Libraries: POSIX Threads(Pthreads), STL,  Python, scikit-learn for offiline machine learning.
 * AZll running/configuration scripts are written for linux OS.
 * We build parsers to parse query workloads from files. We define query workloads in files ending with `.eql`. 
